@@ -1,0 +1,85 @@
+{
+    "targets": {
+        "CXK-SharedHeaders": {
+            "type": "headers",
+            "source_dirs": {
+                "headers/Kernel": {
+                    "framework": "Kernel",
+                    "framework_type": "private",
+                    "install_dir": ".",
+                    "public": [
+                        "CXKAssembly.h",
+                        "CXKBootOptions.h",
+                        "CXKMemory.h",
+                        "CXKMemoryIO.h",
+                        "CXKPOST.h",
+                        "CXKProcessorState.h"
+                    ]
+                },
+                "headers/Kernel/CoreDriver": {
+                    "framework": "Kernel",
+                    "framework_type": "private",
+                    "install_dir": "CoreDriver",
+                    "public": [
+                        "CDACPI.h",
+                        "CDPCIE.h",
+                        "CoreDriver.h"
+                    ]
+                },
+                "headers/Kernel/CoreDriver/ACPI": {
+                    "framework": "Kernel",
+                    "framework_type": "private",
+                    "install_dir": "CoreDriver/ACPI",
+                    "public": []
+                },
+                "headers/Kernel/CoreDriver/PCIe": {
+                    "framework": "Kernel",
+                    "framework_type": "private",
+                    "install_dir": "CoreDriver/PCIe",
+                    "public": []
+                },
+                "headers/System": {
+                    "framework": "System",
+                    "framework_type": "public",
+                    "install_dir": ".",
+                    "public": [
+                        "OSByteMacros.h",
+                        "OSCAR.h",
+                        "OSCompilerMacros.h",
+                        "OSCRC.h",
+                        "OSEndian.h",
+                        "OSGPT.h",
+                        "OSTypes.h",
+                        "OSUID.h",
+                        "OSVersion.h",
+                        "System.h"
+                    ]
+                },
+                "headers/System/Executables": {
+                    "framework": "System",
+                    "framework_type": "public",
+                    "install_dir": "Executables",
+                    "public": [
+                        "OSCX.h",
+                        "OSELF.h"
+                    ]
+                }
+            }
+        },
+        "CXK-SharedLibrary": {
+            "type": "kernel_static_library",
+            "output": "libKernelShared.a",
+            "install": false,
+            "dependencies": [
+                "CXK-SharedHeaders"
+            ],
+            "source_dirs": {
+                "source": [
+                    "CXKMemory.c",
+                    "CXKMemory.s",
+                    "CXKProcessor.s"
+                ]
+            }
+        }
+    }
+}
