@@ -3,8 +3,6 @@
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 /* beeselmane - 27.11.2015 - 8:00 PM EST                           */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* beeselmane - 27.9.2016  - 1:30 AM EST                          */
-/**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 /* Note: This file does not follow standard prefix rules           */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 
@@ -13,82 +11,58 @@
 
 #include <Corona-X.h>
 
+#define OSReflectMacro(...)                     __VA_ARGS__
+
 #if !kCXAssemblyCode
 
+#define OSEnum(...) __OSDeclareEnum(__VA_ARGS__, __OSDeclareEnumWithName, __OSDeclareEnumWithoutName)(__VA_ARGS__)
+#define __OSDeclareEnumWithName(type, name)     type name; enum
+#define __OSDeclareEnumWithoutName(type)        enum
+#define __OSDeclareEnum(a, b, function, ...)    function
+
+#define OSBufferMake(a, s)      ((OSBuffer){((OSAddress)(a)), ((OSSize)(s))})
+#define OSBufferIsEmpty(b)      (!b.size)
+#define kOSBufferEmpty          ((OSBuffer){kOSNullPointer, 0})
+
+#define OSVAStart               __builtin_va_start
+#define OSVAGetNext             __builtin_va_arg
+#define OSVACopy                __builtin_va_copy
+#define OSVAFinish              __builtin_va_end
+
 #if kCXLanguageCXX
-    #ifdef kCXLanguageGNUC
-        #define kOSNullValue        0
-    #else /* No GNU extensions */
-        #define kOSNullValue        __null
-    #endif /* Has GNU extensions */
+    #define kOSNullPointer      __null
 #else /* Regular C */
-    #define kOSNullValue            ((OSAddress)0x00000000)
-#endif /* C/C++ */
+    #define kOSNullPointer      ((OSAddress)0x00000000)
 
-#define kOSNullPointer              kOSNullValue
-#define NULL                        kOSNullValue
-
-#if kCXCompilerGCCLike
-    #if defined(__SIZEOF_INT128__) && (__SIZEOF_INT128__ == 16)
-        #define kOSInt128Available  1
-
-        typedef unsigned __int128   UInt128;
-        typedef   signed __int128   SInt128;
-    #else /* unsupported */
-        #define kOSInt128Available 0
-    #endif /* __int128 support */
-
-    #define OSVAStart               __builtin_va_start
-    #define OSVAGetNext             __builtin_va_arg
-    #define OSVACopy                __builtin_va_copy
-    #define OSVAFinish              __builtin_va_end
-
-    typedef __builtin_va_list       OSVAList;
-#else /* other compiler */
-    #define kOSInt128Available      0
-
-    typedef void *OSVAList;
-#endif /* clang or gcc */
-
-#if kCXABI64Bit
-    typedef unsigned long       UInt64;
-    typedef unsigned int        UInt32;
-    typedef unsigned short      UInt16;
-    typedef unsigned char       UInt8;
-
-    typedef   signed long       SInt64;
-    typedef   signed int        SInt32;
-    typedef   signed short      SInt16;
-    typedef   signed char       SInt8;
-
-    typedef UInt64              UIntN;
-    typedef SInt64              SIntN;
-#else /* kCXABI32Bit */
-    typedef unsigned long long  UInt64;
-    typedef unsigned long int   UInt32;
-    typedef unsigned short      UInt16;
-    typedef unsigned char       UInt8;
-
-    typedef   signed long long  SInt64;
-    typedef   signed long int   SInt32;
-    typedef   signed short      SInt16;
-    typedef   signed char       SInt8;
-
-    typedef UInt32              UIntN;
-    typedef SInt32              SIntN;
-#endif /* ABI Version */
-
-#if !kCXLanguageCXX
     #define true                1
     #define false               0
 
     typedef _Bool               bool;
-#endif /* !C++ */
+#endif /* C/C++ */
 
-#define kOSSizeError            (OSSize)(~((OSSize)0))
-#define kOSUTF8Error            (UInt8)(((UInt8)0))
-#define kOSUTF16Error           (UInt16)(~((UInt16)0))
-#define kOSUTF32Error           (UInt32)(~((UInt32)0))
+#if defined(__SIZEOF_INT128__) && (__SIZEOF_INT128__ == 16)
+    #define kOSInt128Available  1
+
+    typedef unsigned __int128   UInt128;
+    typedef   signed __int128   SInt128;
+#else /* unsupported */
+    #define kOSInt128Available  0
+#endif /* __int128 support */
+
+typedef __builtin_va_list       OSVAList;
+
+typedef unsigned long           UInt64;
+typedef unsigned int            UInt32;
+typedef unsigned short          UInt16;
+typedef unsigned char           UInt8;
+
+typedef   signed long           SInt64;
+typedef   signed int            SInt32;
+typedef   signed short          SInt16;
+typedef   signed char           SInt8;
+
+typedef UInt64                  UIntN;
+typedef SInt64                  SIntN;
 
 typedef bool                    OSBoolean;
 typedef double                  OSFloat64;
@@ -114,17 +88,6 @@ typedef struct {
     OSSize    size;
 } OSBuffer;
 
-#define kOSBufferEmpty      ((OSBuffer){kOSNullPointer, 0})
-#define OSBufferIsEmpty(b)  (!b.size)
-#define OSBufferMake(a, s)  ((OSBuffer){((OSAddress)(a)), ((OSSize)(s))})
-
-#define __CXDeclareEnumWithName(type, name)     type name; enum
-#define __CXDeclareEnumWithoutName(type)        enum
-#define __CXDeclareEnum(a, b, function, ...)    function
-#define CXEnum(...) __CXDeclareEnum(__VA_ARGS__, __CXDeclareEnumWithName, __CXDeclareEnumWithoutName)(__VA_ARGS__)
-
 #endif /* !kCXAssemblyCode */
-
-#define CXReflectMacro(...)                     __VA_ARGS__
 
 #endif /* !defined(__SYSTEM_OSTYPES__) */

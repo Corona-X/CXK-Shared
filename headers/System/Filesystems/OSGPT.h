@@ -3,8 +3,6 @@
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 /* beeselmane - 17.9.2016  - 3:15 PM EST                           */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* beeselmane - 17.9.2016  - 3:15 PM EST                           */
-/**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 
 #ifndef __SYSTEM_OSGPT__
 #define __SYSTEM_OSGPT__ 1
@@ -12,7 +10,6 @@
 #include <Corona-X.h>
 #include <System/OSTypes.h>
 #include <System/OSUID.h>
-#include <System/OSCRC.h>
 
 #if kCXLittleEndian
     #define kOSGPTSignature         0x5452415020494645
@@ -27,12 +24,12 @@
 #define kOSGPTBasicDataFlagHidden   (1 << 62)
 #define kOSGPTBasicDataFlagNoAuto   (1 << 63)
 
-#define kOSGPTUIDEFISystemPartition 0x28732AC11FF8D211BA4B00A0C93EC93B
-#define kOSGPTUIDCXSystemPartition  0xF491CA00C31C4642860D78E6033A322F
+#define kOSGPTUIDEFISystemPartition ((UInt128)0x28732AC11FF8D211BA4B00A0C93EC93B)
+#define kOSGPTUIDCXSystemPartition  ((UInt128)0xF491CA00C31C4642860D78E6033A322F)
 
 #if !kCXAssemblyCode
 
-typedef CXEnum(UInt64, OSGPTPartitionFlags) {
+typedef OSEnum(UInt64, OSGPTPartitionFlags) {
     kOSGPTPartitionFlagSystemPartition = 0x0,
     kOSGPTPartitionFlagEFIIgnore       = 0x1,
     kOSGPTPartitionFlagLegacyBootable  = 0x2
@@ -42,7 +39,7 @@ typedef struct {
     UInt64 signiture;
     UInt32 revision;
     UInt32 headerSize;
-    OSCRC32Checksum headerChecksum;
+    UInt32 headerChecksum;
     UInt32 reserved;
     UInt64 thisHeaderGPT;
     UInt64 backupHeaderGPT;
@@ -52,7 +49,7 @@ typedef struct {
     UInt64 paritionTableLBA;
     UInt32 partitionCount;
     UInt32 eachPartitionSize;
-    OSCRC32Checksum partitionChecksum;
+    UInt32 partitionChecksum;
 } OSGPTHeader;
 
 typedef struct {

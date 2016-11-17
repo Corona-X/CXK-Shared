@@ -3,8 +3,6 @@
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 /* beeselmane - 27.11.2015 - 12:00 AM EST                          */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* beeselmane - 17.9.2016  - 2:00 PM EST                           */
-/**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 
 #ifndef __SYSTEM_OSBYTEMACROS__
 #define __SYSTEM_OSBYTEMACROS__ 1
@@ -199,31 +197,29 @@ OSInline UInt64 OSIRoundToPowerOf2(UInt64 value)
         return n;
     }
 
-    #if kCXABI64Bit
-        #undef OSROL64
-        #define OSROL64(n, s) ((UInt64)OSIROL64(((UInt64)(n)), ((UInt8)(s))))
+    #undef OSROL64
+    #define OSROL64(n, s) ((UInt64)OSIROL64(((UInt64)(n)), ((UInt8)(s))))
 
-        OSInline UInt64 OSIROL64(UInt64 n, UInt8 s)
-        {
-            __asm__ ("rolq %1, %0"
-                     : "+g" (n)
-                     : "cI" (s));
+    OSInline UInt64 OSIROL64(UInt64 n, UInt8 s)
+    {
+        __asm__ ("rolq %1, %0"
+                 : "+g" (n)
+                 : "cI" (s));
 
-            return n;
-        }
+        return n;
+    }
 
-        #undef OSROR64
-        #define OSROR64(n, s) ((UInt64)OSIROR64(((UInt64)(n)), ((UInt8)(s))))
+    #undef OSROR64
+    #define OSROR64(n, s) ((UInt64)OSIROR64(((UInt64)(n)), ((UInt8)(s))))
 
-        OSInline UInt64 OSIROR64(UInt64 n, UInt8 s)
-        {
-            __asm__ ("rorq %1, %0"
-                     : "+g" (n)
-                     : "cI" (s));
+    OSInline UInt64 OSIROR64(UInt64 n, UInt8 s)
+    {
+        __asm__ ("rorq %1, %0"
+                 : "+g" (n)
+                 : "cI" (s));
 
-            return n;
-        }
-    #endif /* 64 Bit */
+        return n;
+    }
 #endif /* Architecture */
 
 #endif /* !kCXAssemblyCode */

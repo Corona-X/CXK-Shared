@@ -3,8 +3,6 @@
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 /* beeselmane - 27.11.2015 - 8:00 PM EST                           */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* beeselmane - 26.9.2016  - 10:15 PM EST                          */
-/**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 
 #ifndef __SYSTEM_OSCOMPILERMACROS__
 #define __SYSTEM_OSCOMPILERMACROS__ 1
@@ -63,14 +61,6 @@
 
 #define OSStringValue(x)        #x
 #define OSShared                OSExport OSStandardABI
-
-#if kCXDebug || kCXDevelopment
-    #define OSDevOnly
-#else /* !(kCXDebug && kCXDevelopment) */
-    OSInline void __OSDoNothing() {}
-
-    #define OSDevOnly   OSAlias(__OSDoNothing)
-#endif /* debug || development */
 
 /// TODO: Define Availability Macros
 

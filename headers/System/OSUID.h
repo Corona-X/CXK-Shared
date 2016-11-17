@@ -3,8 +3,6 @@
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 /* beeselmane - 17.9.2016  - 2:00 PM EST                           */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* beeselmane - 17.9.2016  - 2:00 PM EST                           */
-/**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 
 #ifndef __SYSTEM_OSUID__
 #define __SYSTEM_OSUID__ 1
@@ -49,7 +47,12 @@ typedef struct {
 } OSUIDIntelData;
 
 typedef UInt8 OSUIDRawData[16];
-typedef UInt128 OSUID;
+
+#if kOSInt128Available
+    typedef UInt128 OSUID;
+#else /* !kOSInt128Available */
+    typedef struct { UInt64 high, low; } OSUID;
+#endif /* kOSInt128Available */
 
 #endif /* AkCXAssemblyCode */
 

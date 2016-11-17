@@ -3,8 +3,6 @@
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 /* beeselmane - 20.8.2015  - ?:?? ?? ???                           */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* beeselmane - 27.9.2016  - 1:30 AM EST                           */
-/**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 
 #ifndef __CORONA_X__
 #define __CORONA_X__ 1
@@ -85,7 +83,7 @@
     #define kCXTargetOSApple        0
     #define kCXTargetOSWindows      0
     #define kCXTargetOSLinux        1
-#else /* Unsupported, Assume ELF */
+#else /* Other; Assume ELF (Linux) */
     #define kCXTargetOSCorona       0
     #define kCXTargetOSApple        0
     #define kCXTargetOSWindows      0
@@ -274,44 +272,38 @@
     #define kCXCompilerVersion      "Unknown"
 #endif /* Clang Version */
 
-#define kCXHasVectorExtension               CXHasExtension(attribute_ext_vector_type)
-#define kCXHasEnumeratorAttributes          CXHasExtension(enumerator_attributes)
-#define kCXHasCXXExceptions                 CXHasFeature(cxx_exceptions)
-#define kCXHasCXXRTTI                       CXHasFeature(cxx_rtti)
-#define kCXHasCXXAccessSFINAEErrors         CXHasFeature(cxx_access_control_sfinae)
-#define kCXHasCXXAliasTemplates             CXHasFeature(cxx_alias_templates)
-#define kCXHasCXXAlignAs                    CXHasFeature(cxx_alignas)
-#define kCXHasCXXAlignOf                    CXHasFeature(cxx_alignof)
-#define kCXHasCXXAttributes                 CXHasFeature(cxx_attributes)
-#define kCXHasCXXConstExpr                  CXHasFeature(cxx_constexpr)
-#define kCXHasCXXDeclType                   CXHasFeature(cxx_decltype)
-#define kCXHasCXXDeclTypeIncompleteReturn   CXHasFeature(cxx_decltype_incomplete_return_types)
-#define kCXHasCXXTemplateDefaultArgs        CXHasFeature(cxx_default_function_template_args)
-#define kCXHasCXXDefaultedFunctions         CXHasFeature(cxx_defaulted_functions)
-#define kCXHasCXXDelegatedConstructors      CXHasFeature(cxx_delegating_constructors)
-#define kCXHasCXXDeletedFunctions           CXHasFeature(cxx_deleted_functions)
-#define kCXHasCXXExplicitConversions        CXHasFeature(cxx_explicit_conversions)
-#define kCXHasCXXGeneralizedInitializers    CXHasFeature(cxx_generalized_initializers)
-#define kCXHasCXXImplicitMoves              CXHasFeature(cxx_implicit_moves)
-#define kCXHasCXXStronglyTypedEnumerators   CXHasFeature(cxx_strong_enums)
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= //
+// Set hard requirements for building CX //
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= //
+// Compiler MUST be GCC-like (GCC or clang)
 
-#define kCXHasCAlignAs                      CXHasFeature(c_alignas)
-#define kCXHasCAlignOf                      CXHasFeature(c_alignof)
-#define kCXHasCAtomic                       CXHasFeature(c_atomic)
-#define kCXHasCGenericSelections            CXHasFeature(c_generic_selections)
-#define kCXHasCStaticAssert                 CXHasFeature(c_static_assert)
-#define kCXHasCThreadLocal                  CXHasFeature(c_thread_local)
+#if !kCXCompilerGCCLike
+    #error Unsupported Compiler!
+#endif /* Compiler */
 
-#define kCXHasObjCInstancetype              CXHasFeature(objc_instancetype)
-#define kCXHasObjCARC                       CXHasFeature(objc_arc)
-#define kCXHasObjCARCWeakValues             CXHasFeature(objc_arc_weak)
-#define kCXHasObjCFixedEnums                CXHasFeature(objc_fixed_enum)
-#define kCXHasObjCArrayLiterals             CXHasFeature(objc_array_literals)
-#define kCXHasObjCDictionaryLiterals        CXHasFeature(objc_dictionary_literals)
-#define kCXHasObjCSubscripting              CXHasFeature(objc_subscripting)
-#define kCXHasObjCAutosynthesis             CXHasFeature(objc_default_synthesize_properties)
+// Host System MUST be *NIX or Corona
+#if kCXTargetOSWindows
+    #error Unsupported Host System!
+#endif /* Host System */
 
-#define kCXHasModules                       CXHasFeature(modules)
-#define kCXHasBlocks                        CXHasFeature(blocks)
+// Architecture MUST be 64-Bit
+#if kCXABI32Bit
+    #error CPU Bus Size Too Small!
+#endif /* CPU Bus Size */
+
+// Architecture MUST be little endian
+#if kCXBigEndian
+    #error Unsupported Endianess
+#endif /* Endianness */
+
+// Language MUST be GNU C11, GNU C++14, or Objective-C 2.0
+#if (kCXLanguageC && !kCXLanguageC11) || (kCXLanguageCXX && !kCXLanguageCXX14) || (kCXLanguageObjC && !kCXObjC2) || !kCXLanguageGNUC
+    #error Unsupported Language Version!
+#endif /* Language Version */
+
+// Required Extensions
+#if !CXHasFeature(blocks)
+    #error Missing 1 or more Required Extensions!
+#endif /* Required Extensions */
 
 #endif /* !defined(__CORONA_X__) */
