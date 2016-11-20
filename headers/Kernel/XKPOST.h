@@ -1,11 +1,11 @@
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* CXKPOST.h - Accessing POST Codes                                */
+/* XKPOST.h - Accessing POST Codes                                 */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 /* beeselmane - 21.9.2016  - 8:15 PM EST                           */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 
-#ifndef __KERNEL_CXKPOST__
-#define __KERNEL_CXKPOST__ 1
+#ifndef __KERNEL_XKPOST__
+#define __KERNEL_XKPOST__ 1
 
 #include <Corona-X.h>
 #include <System/OSTypes.h>
@@ -13,25 +13,25 @@
 #if kCXArchIA
 
 #if kCXBuildDev
-    #define kCXKDefaultPOSTPort 0x80
+    #define kXKDefaultPOSTPort 0x80
 
     #if kCXAssemblyCode
-        #define CXKSetPOSTCode(c)               \
+        #define XKSetPOSTCode(c)               \
             movb $(c), %al;                     \
-            outb %al, $(kCXKDefaultPOSTPort)
+            outb %al, $(kXKDefaultPOSTPort)
     #else /* !kCXAssemblyCode */
-        #include <Kernel/CXKMemoryIO.h>
+        #include <Kernel/XKPortIO.h>
 
-        #define CXKSetPOSTCode(c) CXKWriteByte((OSAddress)kCXKDefaultPOSTPort, ((CXKPOSTCode)c))
+        #define XKSetPOSTCode(c) XKWriteByte((OSAddress)kXKDefaultPOSTPort, ((XKPOSTCode)c))
 
-        typedef UInt8 CXKPOSTCode;
+        typedef UInt8 XKPOSTCode;
     #endif /* Assembly Code */
 #else /* !kCXBuildDev */
     #if !kCXAssemblyCode
-        typedef UInt8 CXKPOSTCode;
+        typedef UInt8 XKPOSTCode;
     #endif /* !kCXAssemblyCode */
 #endif /* kCXBuildDev */
 
 #endif /* Architecture */
 
-#endif /* !defined(__KERNEL_CXKPOST__) */
+#endif /* !defined(__KERNEL_XKPOST__) */

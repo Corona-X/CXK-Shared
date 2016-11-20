@@ -1,22 +1,22 @@
-#include <Kernel/CXKAssembly.h>
+#include <Kernel/XKAssembly.h>
 
-.section kCXKCodeSectionName
-.align   kCXKNaturalAlignment
+.section kXKCodeSectionName
+.align   kXKNaturalAlignment
 
-CXKDeclareFunction(CXKProcessorMSRRead):
+XKDeclareFunction(XKProcessorMSRRead):
     movq %rdi, %rcx
     rdmsr
     shlq $32, %rdx
     orq %rdx, %rax
     ret
 
-CXKDeclareFunction(CXKProcessorMSRWrite):
+XKDeclareFunction(XKProcessorMSRWrite):
     movq $0x0, %rax
     ret
 
-.align kCXKNaturalAlignment
+.align kXKNaturalAlignment
 
-CXKDeclareFunction(CXKProcessorGetBasicState):
+XKDeclareFunction(XKProcessorGetBasicState):
     pushfq
     movq %rax, 0x00(%rdi)
     movq %rbx, 0x08(%rdi)
@@ -51,9 +51,9 @@ CXKDeclareFunction(CXKProcessorGetBasicState):
     movw %gs,  0x9A(%rdi)
     ret
 
-.align kCXKNaturalAlignment
+.align kXKNaturalAlignment
 
-CXKDeclareFunction(CXKProcessorGetSystemState):
+XKDeclareFunction(XKProcessorGetSystemState):
     movq %cr0, %rax
     movq %cr2, %rcx
     movq %cr3, %rdx
@@ -71,7 +71,7 @@ CXKDeclareFunction(CXKProcessorGetSystemState):
     str  0x52(%rdi)
     ret
 
-CXKDeclareFunction(CXKProcessorGetDebugState):
+XKDeclareFunction(XKProcessorGetDebugState):
     movq %dr0, %rax
     movq %dr1, %rcx
     movq %dr2, %rdx

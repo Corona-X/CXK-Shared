@@ -1,11 +1,11 @@
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* CXKMemoryIO.h - Functions for Reading and Writing IO Ports      */
+/* XKPortIO.h - Functions for Reading and Writing IO Ports         */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 /* beeselmane - 18.9.2016  - 5:00 PM EST                           */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 
-#ifndef __KERNEL_CXKMEMORYIO__
-#define __KERNEL_CXKMEMORYIO__ 1
+#ifndef __KERNEL_XKPORTYIO__
+#define __KERNEL_XKPORTYIO__ 1
 
 #include <Corona-X.h>
 #include <System/OSCompilerMacros.h>
@@ -14,38 +14,38 @@
 #if kCXArchIA
 #if !kCXAssemblyCode
 
-OSInline UInt8 CXKReadByte(OSAddress port)
+OSInline UInt8 XKReadIOByte(OSAddress port)
 {
     UInt8 value;
     __asm__ volatile("inb %w1, %b0" : "=a" (value) : "Nd" (port));
     return value;
 }
 
-OSInline UInt16 CXKReadWord(OSAddress port)
+OSInline UInt16 XKReadIOWord(OSAddress port)
 {
     UInt16 value;
     __asm__ volatile("inw %w1, %w0" : "=a" (value) : "Nd" (port));
     return value;
 }
 
-OSInline UInt32 CXKReadDoubleWord(OSAddress port)
+OSInline UInt32 XKReadIODoubleWord(OSAddress port)
 {
     UInt32 value;
     __asm__ volatile("inl %w1, %0" : "=a" (value) : "Nd" (port));
     return value;
 }
 
-OSInline void CXKWriteByte(OSAddress port, UInt8 byte)
+OSInline void XKWriteIOByte(OSAddress port, UInt8 byte)
 {
     __asm__ volatile("outb %b0, %w1" : : "a" (byte), "Nd" (port));
 }
 
-OSInline void CXKWriteWord(OSAddress port, UInt16 word)
+OSInline void XKWriteIOWord(OSAddress port, UInt16 word)
 {
     __asm__ volatile("outw %w0, %w1" : : "a" (word), "Nd" (port));
 }
 
-OSInline void CXKWriteDoubleWord(OSAddress port, UInt32 doubleword)
+OSInline void XKWriteIODoubleWord(OSAddress port, UInt32 doubleword)
 {
     __asm__ volatile("outl %0, %w1" : : "a" (doubleword), "Nd" (port));
 }
@@ -53,4 +53,4 @@ OSInline void CXKWriteDoubleWord(OSAddress port, UInt32 doubleword)
 #endif /* !kCXAssemblyCode */
 #endif /* Architecture */
 
-#endif /* !defined(__KERNEL_CXKMEMORYIO__) */
+#endif /* !defined(__KERNEL_XKPORTYIO__) */

@@ -1,11 +1,11 @@
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* CXKProcessorState.h - Functions get Retrieving Processor State  */
+/* XKProcessorState.h - Functions get Retrieving Processor State   */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 /* beeselmane - 28.9.2016  - 3:30 PM EST                           */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 
-#ifndef __KERNEL_CXKPROCESSOR__
-#define __KERNEL_CXKPROCESSOR__ 1
+#ifndef __KERNEL_XKPROCESSOR__
+#define __KERNEL_XKPROCESSOR__ 1
 
 #include <Corona-X.h>
 #include <System/OSTypes.h>
@@ -17,13 +17,13 @@ typedef struct {
     UInt16 limit;
     OSAddress base;
     UInt16 pad[3];
-} CXKProcessorGDTR;
+} XKProcessorGDTR;
 
 typedef struct {
     UInt16 limit;
     OSAddress base;
     UInt16 pad[3];
-} CXKProcessorIDTR;
+} XKProcessorIDTR;
 
 typedef struct {
     UInt64 rax, rbx;
@@ -38,61 +38,61 @@ typedef struct {
     UInt16 cs, ds, ss;
     UInt16 es, fs, gs;
     UInt32 padding;
-} CXKProcessorBasicState;
+} XKProcessorBasicState;
 
 typedef struct {
     UInt64 cr0, cr2;
     UInt64 cr3, cr4, cr8;
-    CXKProcessorGDTR gdtr;
-    CXKProcessorIDTR idtr;
+    XKProcessorGDTR gdtr;
+    XKProcessorIDTR idtr;
     UInt16 ldtr;
     UInt16 tr;
     UInt32 padding;
-} CXKProcessorSystemState;
+} XKProcessorSystemState;
 
 typedef struct {
     UInt64 dr0, dr1, dr2;
     UInt64 dr3, dr6, dr7;
-} CXKProcessorDebugState;
+} XKProcessorDebugState;
 
-typedef UInt64 CXKProcessorMSR;
+typedef UInt64 XKProcessorMSR;
 
-OSShared CXKProcessorMSR CXKProcessorMSRRead(UInt32 id);
-OSShared void CXKProcessorMSRWrite(UInt32 id, CXKProcessorMSR value);
+OSShared XKProcessorMSR XKProcessorMSRRead(UInt32 id);
+OSShared void XKProcessorMSRWrite(UInt32 id, XKProcessorMSR value);
 
 // Note: rdi will always be the pointer passed in
-OSShared void CXKProcessorGetBasicState(CXKProcessorBasicState *state);
-OSShared void CXKProcessorGetSystemState(CXKProcessorSystemState *state);
-OSShared void CXKProcessorGetDebugState(CXKProcessorDebugState *state);
+OSShared void XKProcessorGetBasicState(XKProcessorBasicState *state);
+OSShared void XKProcessorGetSystemState(XKProcessorSystemState *state);
+OSShared void XKProcessorGetDebugState(XKProcessorDebugState *state);
 
-/*OSInline void CXKProcessorGetGDTR(CXKProcessorGDTR gdt)
+/*OSInline void XKProcessorGetGDTR(XKProcessorGDTR gdt)
 {
     __asm__("sgdt %0" : "=m" (gdt));
 }
 
-OSInline void CXKProcessorGetLDT(CXKProcessorSegmentSelector ldt)
+OSInline void XKProcessorGetLDT(XKProcessorSegmentSelector ldt)
 {
     __asm__("sldt %0" : "=m" (ldt));
 }
 
-OSInline void CXKProcessorGetTR(CXKProcessorSegmentSelector tr)
+OSInline void XKProcessorGetTR(XKProcessorSegmentSelector tr)
 {
     __asm__("str %0" : "=m" (tr));
 }
 
-OSInline void CXKProcessorGetIDTR(CXKProcessorIDTR idt)
+OSInline void XKProcessorGetIDTR(XKProcessorIDTR idt)
 {
     __asm__("sidt %0" : "=m" (idt));
 }*/
 
-#define CXKProcessorLoadRIP(pointer)                            \
+#define XKProcessorLoadRIP(pointer)                            \
     do {                                                        \
         __asm__ volatile("movq $1f, %0; 1:" : "=r" (pointer))   \
     } while (0)
 
 #else /* kCXAssemblyCode */
 
-#define CXKProcessorPushAll     \
+#define XKProcessorPushAll     \
     pushq %rsp;                 \
     pushq %rbp;                 \
     pushq %rax;                 \
@@ -102,7 +102,7 @@ OSInline void CXKProcessorGetIDTR(CXKProcessorIDTR idt)
     pushq %rsi;                 \
     pushq %rdi
 
-#define CXKProcessorPopAll      \
+#define XKProcessorPopAll      \
     popq %rdi;                  \
     popq %rsi;                  \
     popq %rdx;                  \
@@ -115,4 +115,4 @@ OSInline void CXKProcessorGetIDTR(CXKProcessorIDTR idt)
 #endif /* kCXAssemblyCode */
 #endif /* Architecture */
 
-#endif /* !defined(__KERNEL_CXKPROCESSOR__) */
+#endif /* !defined(__KERNEL_XKPROCESSOR__) */

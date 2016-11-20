@@ -1,10 +1,10 @@
-#include <Kernel/CXKAssembly.h>
+#include <Kernel/XKAssembly.h>
 
-.section kCXKCodeSectionName
-.align   kCXKNaturalAlignment
+.section kXKCodeSectionName
+.align   kXKNaturalAlignment
 
-CXKDeclareFunction(CXKMemorySetValue):
-CXKDeclareFunction(CXKBufferSetValue):
+XKDeclareFunction(XKMemorySetValue):
+XKDeclareFunction(XKBufferSetValue):
     movb %dl, %al
     movq %rsi, %rcx
     cld
@@ -35,8 +35,8 @@ CXKDeclareFunction(CXKBufferSetValue):
         rep stosb
         ret
 
-CXKDeclareFunction(CXKMemoryCopy):
-CXKDeclareFunction(CXKBufferCopy):
+XKDeclareFunction(XKMemoryCopy):
+XKDeclareFunction(XKBufferCopy):
     xchgq %rsi, %rdi
     cld
 
@@ -50,7 +50,7 @@ CXKDeclareFunction(CXKBufferCopy):
 
     ret
 
-CXKDeclareFunction(CXKMemoryCompare):
+XKDeclareFunction(XKMemoryCompare):
     movq %rdx, %rcx
     cld
 
@@ -80,7 +80,7 @@ CXKDeclareFunction(CXKMemoryCompare):
         subw %dx, %ax
         ret
 
-CXKStringCompare8:
+XKStringCompare8:
     1:
         testb $7, %dil
         je 2f
@@ -105,7 +105,7 @@ CXKStringCompare8:
         subq $8, %rdi
         subq $8, %rsi
 
-        .align kCXKNaturalAlignment
+        .align kXKNaturalAlignment
     3:
         movq 8(%rdi), %rax
         movq 8(%rsi), %rdx
@@ -120,7 +120,7 @@ CXKStringCompare8:
         testq %r9, %rdx
         je 4f
 
-        .align kCXKNaturalAlignment
+        .align kXKNaturalAlignment
     4:
         movb (%rdi), %al
         movb (%rsi), %dl

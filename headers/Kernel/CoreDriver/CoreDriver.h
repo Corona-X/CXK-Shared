@@ -9,7 +9,7 @@
 
 #include <Corona-X.h>
 
-#include <Kernel/CoreDriver/CDACPI.h>
-#include <Kernel/CoreDriver/CDPCIE.h>
+#include <Kernel/CoreDriver/ACPI/CDACPI.h>
+#include <Kernel/CoreDriver/PCIe/CDPCIE.h>
 
 #endif /* __KERNEL_COREDRIVER__ */
