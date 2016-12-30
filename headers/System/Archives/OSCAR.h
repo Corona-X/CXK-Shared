@@ -3,7 +3,7 @@
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 /* beeselmane - 27.11.2015 - 8:00 PM EST                           */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* Note: This file uses the nonstandard prefix 'CAR'               */
+/* Note: This file uses the nonstandard prefix 'CA'                */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 
 #ifndef __SYSTEM_OSCAR__
@@ -22,88 +22,107 @@
 #define kCARHeaderVersionSystem             ((UInt8 [4]){'X', '.', 'F', 's'})
 #define kCARHeaderBootXLockValue            0xFFFF
 
-typedef CXEnum(OSProcessorType, CARProcessorType) {
+typedef OSEnum(UInt8, CAEntryType) {
+    kCAEntryTypeDirectory                   = 0,
+    kCAEntryTypeFile                        = 1,
+    kCAEntryTypeSymbolicLink                = 2,
+    kCAEntryTypeMeta                        = 0xFF
+};
+
+typedef OSEnum(UInt8, CAEntryFlags) {
+    kCAEntryFlagUTF8                        = 0x00,
+    kCAEntryFlagUTF16                       = 0x01,
+    kCAEntryFlagUTF32                       = 0x02,
+    kCAEntryFlagMetaHasData                 = 0x80
+};
+
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= //
+
+typedef OSEnum(UInt8, CAProcessorType) {
     kCARProcessorTypeX86                    = kCXProcessorTypeX86,
     kCARProcessorTypeX86_64                 = kCXProcessorTypeX86_64,
     kCARProcessorTypeARMv7                  = kCXProcessorTypeARMv7,
     kCARProcessorTypeARMv8                  = kCXProcessortypeARMv8
 };
 
-typedef CXEnum(UInt8, CARTOCEntryType) {
-    kCARTOCEntryTypeDirectory               = 0,
-    kCARTOCEntryTypeFile                    = 1,
-    kCARTOCEntryTypeSymbolicLink            = 2
-};
-
-typedef CXEnum(UInt16, CARSystemType) {
+typedef OSEnum(UInt16, CASystemType) {
     kCARSystemTypeCoronaX                   = 0,
     kCARSystemTypeCorOS                     = 1,
     kCARSystemTypeXMobile                   = 2,
     kCARSystemTypeCMobile                   = 3
 };
 
-typedef CXEnum(UInt16, CARSystemBuildType) {
+typedef OSEnum(UInt16, CASystemBuildType) {
     kCARSystemBuildTypeDebug                = 0,
     kCARSystemBuildTypeDevelopment          = 1,
     kCARSystemBuildTypeRelease              = 2,
     kCARSystemBuildTypeStable               = 3
 };
 
-typedef CXEnum(UInt16, CARSystemDirectoryFlag) {
+typedef OSEnum(UInt16, CASystemDirectoryFlag) {
     kCARSystemDirectoryFlagCanEnumerate     = 0x0001,
     kCARSystemDirectoryFlagAllowsExecute    = 0x0002,
 };
 
-typedef CXEnum(UInt16, CARSystemFileFlag) {
+typedef OSEnum(UInt16, CASystemFileFlag) {
     kCARSystemFileFlagCanRead               = 0x0001,
     kCARSystemFileFlagCanUserRead           = 0x0002,
     kCARSystemFileCanExecute                = 0x0004,
     kCARSystemFileCanUserExecute            = 0x0010,
 };
 
-typedef struct CARHeaderS1 {
-    UInt8  magic[4];
-    UInt8  version[4];
-    UInt32 tocOffset;
-    UInt64 stringTableOffset;
-    UInt64 dataSectionOffset;
-    UInt32 checksum;
-} CARHeaderS1;
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= //
 
-typedef struct CARHeaderS2 {
+typedef struct {
     UInt8  magic[4];
     UInt8  version[4];
-    UInt32 tocOffset;
-    UInt64 stringTableOffset;
+    UInt64 entryTableOffset;
     UInt64 dataSectionOffset;
     UInt32 checksum;
+    UInt32 headerChecksum;
+} CAHeaderS1;
+
+typedef struct {
+    UInt8  magic[4];
+    UInt8  version[4];
+    UInt64 entryTableOffset;
+    UInt64 dataSectionOffset;
+    UInt32 checksum;
+    UInt32 headerChecksum;
     UInt64 dataModification;
     UInt64 archiveSignature;
-} CARHeaderS2;
+} CAHeaderS2;
 
-typedef struct CARTOCEntry {
-    UInt32 nameOffset;
-    UInt8 entryType;
+typedef struct {
+    UInt8 type;
+    UInt8 padding[3];
     UInt64 dataOffset;
     UInt64 dataSize;
-} CARTOCEntry;
+    // OSUTF8Char *path;
+} CAEntryS1;
 
-typedef struct CARDataModification {
-    struct CAREncryptionInfo {
-        UInt8 cipher;
-        UInt64 startOffset;
-        UInt64 runLength;
-        UInt16 padding;
-        UInt8 reserved;
-    } encryption;
-    struct CARCompressionInfo {
-        UInt8 algorithm;
-        UInt64 startOffset;
-        UInt64 runLength;
-        UInt16 padding;
-        UInt8 reserved;
-    } compression;
-} CARDataModification;
+typedef struct {
+    UInt8 type;
+    UInt8 flags;
+    UInt16 padding;
+    UInt64 dataOffset;
+    UInt64 dataSize;
+    // OSUTF8Char *path;
+} CAEntryS2;
+
+typedef struct {
+    UInt8 entryCount;
+    UInt8 padding[3];
+} CADataModification;
+
+typedef struct {
+    UInt8 type;
+    UInt8 padding[3];
+    UInt64 startOffset;
+    UInt64 runLength;
+} CADataModificationInfo;
+
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= //
 
 typedef struct CARHeaderBootX {
     UInt8  magic[4];
@@ -162,8 +181,8 @@ typedef struct CARSystemTOCFileEntry {
 } CARSystemTOCFileEntry;
 
 typedef struct CARSystemVersionInternal CARSystemVersionInternal;
-typedef struct CARCompressionInfo CARCompressionInfo;
-typedef struct CAREncryptionInfo CAREncryptionInfo;
+
+// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= //
 
 #endif /* !kCXAssemblyCode */
 
