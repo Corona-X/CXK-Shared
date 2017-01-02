@@ -85,14 +85,14 @@ OSInline void XKProcessorGetIDTR(XKProcessorIDTR idt)
     __asm__("sidt %0" : "=m" (idt));
 }*/
 
-#define XKProcessorLoadRIP(pointer)                            \
+#define XKProcessorLoadRIP(pointer)                             \
     do {                                                        \
         __asm__ volatile("movq $1f, %0; 1:" : "=r" (pointer))   \
     } while (0)
 
 #else /* kCXAssemblyCode */
 
-#define XKProcessorPushAll     \
+#define XKProcessorPushAll      \
     pushq %rsp;                 \
     pushq %rbp;                 \
     pushq %rax;                 \
@@ -102,7 +102,7 @@ OSInline void XKProcessorGetIDTR(XKProcessorIDTR idt)
     pushq %rsi;                 \
     pushq %rdi
 
-#define XKProcessorPopAll      \
+#define XKProcessorPopAll       \
     popq %rdi;                  \
     popq %rsi;                  \
     popq %rdx;                  \

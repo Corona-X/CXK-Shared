@@ -105,6 +105,9 @@ static OSLength XKSimpleStringLengthUTF16(OSUTF16Char *string)
 
 void XKSerial0OutputUTF8(OSUTF8Char character)
 {
+    if (character == '\n')
+        XKSerial0OutputUTF8('\r');
+
     while (!(XKReadIOByte(kXKSerialPort0 + 5) & 0x20)) {
         // Do nothing
     }

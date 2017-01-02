@@ -4,8 +4,8 @@
 /* beeselmane - 28.9.2016  - 4:00 PM EST                           */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 
-#ifndef __KERNEL_XKPROCESSOR__
-#define __KERNEL_XKPROCESSOR__ 1
+#ifndef __KERNEL_XKASSEMBLY__
+#define __KERNEL_XKASSEMBLY__ 1
 
 #include <Corona-X.h>
 
@@ -38,4 +38,4 @@
 
 #endif /* kCXAssemblyCode */
 
-#endif /* !defined(__KERNEL_XKPROCESSOR__) */
+#endif /* !defined(__KERNEL_XKASSEMBLY__) */

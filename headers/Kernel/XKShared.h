@@ -12,6 +12,7 @@
 #include <System/OSTypes.h>
 #include <Kernel/XKAssembly.h>
 #include <Kernel/XKMemory.h>
+#include <Kernel/XKSerial.h>
 #include <Kernel/XKPortIO.h>
 #include <Kernel/XKPOST.h>
 #include <Kernel/XKProcessorState.h>
