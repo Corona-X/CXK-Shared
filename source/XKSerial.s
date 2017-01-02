@@ -194,8 +194,9 @@ XKDeclareFunction(XKSerialPortSetBaudDivisor):
 //   %di: port
 //   %si: rate
 //
-// Return Value:
-//   ---
+// Return Value (%al):
+//   success: 1
+//   failure: 0
 //
 // Destroyed Registers:
 //   %ax
@@ -213,9 +214,12 @@ XKDeclareFunction(XKSerialPortSetBaudRate):
     jnz 1f                              // Return if there was a remainder
     movw %ax, %si                       // Load divisor into second argument register
     callq XKSymbol(XKSerialPortSetBaudDivisor)  // Set the divisor
+    movb $1, %al                        // Mark that we could calculate a whole divisor
+    ret                                 // Return to parent (successfully)
 
     1:
-        ret                             // We either did it or an error occurred; return in either case
+        movb $0, %al                    // Signify that we failed to find a whole number divisor
+        ret                             // An error occurred; return to parent
 
 // Arguments:
 //   %di: port

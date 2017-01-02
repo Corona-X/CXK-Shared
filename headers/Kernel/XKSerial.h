@@ -39,7 +39,7 @@
         /**
          * This function initializes tests for a serial port at the given address.
          *   If there is a port found, it is reset to default values using the
-         *   @XKSerialPortReset function and then certain port registers are setup
+         *   #XKSerialPortReset function and then certain port registers are setup
          *   for basic serial data transfer.
          *
          * @argument portBase:
@@ -55,8 +55,8 @@
          *          location where the scratch register would be located (base + 7) in a
          *          valid serial port and then reading the value back and ensuring they match.
          *          This is done twice. If it fails either time, 'kXKSerialPortError' is
-         *          returned immidietely.
-         *     2. Reset the serial port by calling @XKSerialPortReset on the port given
+         *          returned immediately.
+         *     2. Reset the serial port by calling #XKSerialPortReset on the port given
          *     3. Setup the serial port for basic character sending.
          *     4. Return the serial port passed to the function
          */
@@ -70,12 +70,12 @@
          *
          * @implementation:
          *   This function simply writes the default values
-         *     to each register in the serial port.
+         *   to each register in the serial port.
          */
         OSPrivate void XKSerialPortReset(XKSerialPort port);
 
         /**
-         * This function setups up the "line control" register in a given serial port.
+         * This function sets up the "line control" register in a given serial port.
          *   The line control register determines the size of each transferred character,
          *   how to send a parity checksum, if at all, and how many stop bits to send
          *   with each character transferred.
@@ -107,20 +107,132 @@
          *     2. kXKSerial2StopBits - 2 stop bits
          *
          * @implementation:
-         *   This function simply builds the proper 8-bit value for the line control register
-         *     given its current value, and writes it to the proper I/O port.
-         *
+         *   This function simply builds the proper 8-bit value for the line control
+         *   register given its current value, and writes it to the proper I/O port.
          */
         OSPrivate void XKSerialPortSetupLineControl(XKSerialPort port, UInt8 size, UInt8 parity, UInt8 stop);
 
+        /**
+         * This function sets the divisor for the serial baud rate on the given port.
+         *   Basically, it sets how quickly the serial port transfers information as a
+         *   fraction of its ~1.843200 MHz internal clock.
+         *
+         * @argument port:
+         *   The base I/O port address for the serial port.
+         *
+         * @argument divisor:
+         *   The factor by which to divide the internal clock
+         *   (the baud rate is actually the (clock / 16) over this value)
+         *
+         * @implementation:
+         *   This function writes the provided divisor to the first two I/O port registers
+         *   in the serial port. It does this with the divisor latch-access bit (DLAB) bit
+         *   in the line control register set. It enables and disables this bit as well.
+         */
         OSPrivate void XKSerialPortSetBaudDivisor(XKSerialPort port, UInt16 divisor);
 
-        OSPrivate void XKSerialPortSetBaudRate(XKSerialPort port, UInt32 rate);
+        /**
+         * This function sets the baud rate for the given serial port directly. The baud rate
+         * of a serial port is the effective transfer rate of information. It is specified
+         * internally as a divisor of 1/16th the port's 1.843200 MHz internal clock.
+         *
+         * @argument port:
+         *   The base I/O port address for the serial port.
+         *
+         * @argument rate:
+         *   The baud rate which the serial port should operate at.
+         *   This must be able to be specified as (183200 / 16) / n where is a whole number)
+         *
+         * @return:
+         *   A successful return code (true) is returned only if a whole number divisor could
+         *   be calculated from the provided rate.
+         *
+         * @implementation:
+         *   This function begins by dividing (1843200 / 16), or 0x1C200, by the provided rate.
+         *   It then calls #XKSerialPortSetBaudDivisor with the
+         */
+        OSPrivate bool XKSerialPortSetBaudRate(XKSerialPort port, UInt32 rate);
 
+        /**
+         * This function writes a single character to a serial port's transmit buffer. If there is
+         *   already another pending transmission, this function will either wait for it to complete
+         *   or it will return immediately (depending on the parameters passed)
+         *
+         * @argument port:
+         *   The base I/O port address for the serial port.
+         *
+         * @argument character:
+         *   The actual character to write. The number of bits of this field which will actually be
+         *   transferred depends on the serial port's current word length setting.
+         *   (See #XKSerialPortSetupLineControl)
+         *
+         * @arguemnt block:
+         *   This argument specifies whether or not this function should wait for the port to be
+         *   ready to transmit another character. If it is disabled, this function may not actually
+         *   write the character to the transmit buffer
+         *
+         * @return:
+         *    If block is set, this function will always return true. If not, this function will only
+         *    return true if the character was actually written to the transmit buffer.
+         *
+         * @implementation:
+         *   This function operates as follows:
+         *     1. Check to see if the transmit buffer is ready. If it is write to it and return true.
+         *     2. Check to see if we should wait on the transmit buffer. If we shouldn't, return false.
+         *     3. Stall the processor for a small amount of time then jump back to step 1.
+         */
         OSPrivate bool XKSerialWriteCharacter(XKSerialPort port, UInt8 character, bool block);
 
+        /**
+         * This function reads a single character from a serial port's incoming character buffer. If there
+         *   is nothing ready, this function will either wait until a character is ready or it will return
+         *   return immediately (depending on the parameters passed)
+         *
+         * @argument port:
+         *   The base I/O port address for the serial port.
+         *
+         * @argument block:
+         *   This argument specifies whether or not to wait for a character to be received. Passing a value of
+         *   true means that this function should stall until a character is ready and passing a value of false
+         *   specifies that this function should return immediately regardless of weather or not a character
+         *   could be read.
+         *
+         * @return:
+         *   If an error has been detected by the serial port, this function will return 'kXKSerialReadError'.
+         *   If block is set and no error are detected, the character read from the serial port is returned.
+         *   If block is not set, there are no transmission error detected, and no character is ready when
+         *   this function is called, the value 0x00 is returned.
+         *
+         * @implementation:
+         *   This function operates as follows:
+         *     1. Check to see if the serial port has detected any transmission errors. If it has return
+         *        'kXKSerialReadError' immediately.
+         *     2. Check for a character in the incoming buffer. If there is one, return it.
+         *     3. If block is not set, return 0x00. If block is set, go back to step 1.
+         */
         OSPrivate UInt8 XKSerialReadCharacter(XKSerialPort port, bool block);
 
+        /**
+         * This function writes a UTF-8 encoded string to a provided serial port. The string is assumed to be
+         * null-terminated. This function will stall the calling processor when writing each character to the
+         * port if the port is not ready by the time the processor is (if the current CPU is faster than ~1.8
+         * MHz, this will be the case, and given that 1.8 MHz CPUs are unsupported by CX, this will occur.
+         *
+         * @argument port:
+         *   The base I/O port address for the serial port.
+         *
+         * @argument string:
+         *   The address of the string to write to the port. Null terminated.
+         *
+         * @implementation:
+         *   This function is implemented using #XKSerialWriteCharacter to write characters. The `block` parameter
+         *   is always set to true. This function operates as follows:
+         *     1. Load a byte from the string address. If this byte is 0 (the null terminator), return
+         *     2. Increment the string pointer to point to the next character in the string.
+         *     3. Print the character with a call to #XKSerialWriteCharacter.
+         *     4. Go back to step 1.
+         *
+         */
         OSPrivate void XKSerialWriteString(XKSerialPort port, UInt8 *string);
     #endif /* kCXBootloaderCode && !kCXAssemblyCode */
 #endif /* kCXBuildDev */

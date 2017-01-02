@@ -47,7 +47,7 @@
     #define OSStandardABI       __attribute__((sysv_abi))
     #define OSFault()           __builtin_trap()
 
-    #if kCXGCCVersion >= 4
+    #if kCXGNUCVersion >= 4
         #define OSInline        static __inline __attribute__((always_inline))
     #elif kCXCompilerGCCLike
         #define OSInline        static __inline__
