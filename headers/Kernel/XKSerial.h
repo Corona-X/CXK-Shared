@@ -1,5 +1,5 @@
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* XKSerial.h - Kernel shared Serial Driver                        */
+/* XKSerial.h - Kernel shared Serial Driver (Based on I/O Ports    */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 /* beeselmane - 9.10.2016  - 12:00 AM EST                          */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
@@ -8,6 +8,7 @@
 #define __KERNEL_XKSERIAL__ 1
 
 #include <Corona-X.h>
+#include <System/OSCompilerMacros.h>
 #include <System/OSTypes.h>
 
 #if kCXBuildDev

@@ -20,7 +20,7 @@
 #define __OSDeclareEnumWithoutName(type)        enum
 #define __OSDeclareEnum(a, b, function, ...)    function
 
-#define OSBufferMake(a, s)      ((OSBuffer){((OSAddress)(a)), ((OSSize)(s))})
+#define OSBufferMake(a, s)      ((OSBuffer){((OSSize)(s)), ((OSAddress)(a))})
 #define OSBufferIsEmpty(b)      (!b.size)
 #define kOSBufferEmpty          ((OSBuffer){kOSNullPointer, 0})
 
@@ -32,7 +32,7 @@
 #if kCXLanguageCXX
     #define kOSNullPointer      __null
 #else /* Regular C */
-    #define kOSNullPointer      ((OSAddress)0x00000000)
+    #define kOSNullPointer      ((OSAddress)0x0000000000000000)
 
     #define true                1
     #define false               0
@@ -84,8 +84,8 @@ typedef UInt16                  OSUTF16Char;
 typedef UInt8                   OSUTF8Char;
 
 typedef struct {
-    OSAddress address;
     OSSize    size;
+    OSAddress address;
 } OSBuffer;
 
 #endif /* !kCXAssemblyCode */

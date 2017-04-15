@@ -9,20 +9,16 @@
 
 #include <Corona-X.h>
 
-#include <System/OSTypes.h>
+#include <Kernel/XKSharedTarget.h>
 #include <Kernel/XKAssembly.h>
 #include <Kernel/XKMemory.h>
 #include <Kernel/XKSerial.h>
 #include <Kernel/XKPortIO.h>
 #include <Kernel/XKPOST.h>
 #include <Kernel/XKProcessorState.h>
-
-#if kCXBuildDev
-    // Debug logging function. Assumes serial port at default address
-    // is already initialized. Only kernel shared logging function.
-    OSShared void XKPrintString(const char *format, ...);
-#else
-    #define XKPrintString(...)
-#endif
+#include <Kernel/XKUnicode.h>
+#include <Kernel/XKConsole.h>
+#include <Kernel/XKStringFormatting.h>
+#include <Kernel/XKLog.h>
 
 #endif /* !defined(__KERNEL_XKSHARED__) */

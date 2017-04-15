@@ -3,6 +3,11 @@
 .section kXKCodeSectionName
 .align   kXKNaturalAlignment
 
+XKDeclareFunction(memset):
+    movq %rsi, %r8
+    movb %cl, %sil
+    movq %r8, %rsi
+
 XKDeclareFunction(XKMemorySetValue):
 XKDeclareFunction(XKBufferSetValue):
     movb %dl, %al
@@ -80,7 +85,7 @@ XKDeclareFunction(XKMemoryCompare):
         subw %dx, %ax
         ret
 
-XKStringCompare8:
+XKDeclareFunction(XKStringCompare8):
     1:
         testb $7, %dil
         je 2f

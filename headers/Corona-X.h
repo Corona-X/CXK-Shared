@@ -68,27 +68,52 @@
     #define kCXTargetOSApple        0
     #define kCXTargetOSWindows      0
     #define kCXTargetOSLinux        0
+
+    #define kCXHostOSCorona         1
+    #define kCXHostOSApple          0
+    #define kCXHostOSWindows        0
+    #define kCXHostOSLinux          0
 #elif defined(__APPLE__) || defined(__APPLE_CC__)
-    #define kCXTargetOSCorona       0
-    #define kCXTargetOSApple        1
+    #define kCXTargetOSCorona       1
+    #define kCXTargetOSApple        0
     #define kCXTargetOSWindows      0
     #define kCXTargetOSLinux        0
+
+    #define kCXHostOSCorona         0
+    #define kCXHostOSApple          1
+    #define kCXHostOSWindows        0
+    #define kCXHostOSLinux          0
 #elif defined(_WIN32)
-    #define kCXTargetOSCorona       0
+    #define kCXTargetOSCorona       1
     #define kCXTargetOSApple        0
-    #define kCXTargetOSWindows      1
+    #define kCXTargetOSWindows      0
     #define kCXTargetOSLinux        0
+
+    #define kCXHostOSCorona         0
+    #define kCXHostOSApple          0
+    #define kCXHostOSWindows        1
+    #define kCXHostOSLinux          0
 #elif defined(__linux) || defined(__unix)
-    #define kCXTargetOSCorona       0
+    #define kCXTargetOSCorona       1
     #define kCXTargetOSApple        0
     #define kCXTargetOSWindows      0
-    #define kCXTargetOSLinux        1
+    #define kCXTargetOSLinux        0
+
+    #define kCXHostOSCorona         0
+    #define kCXHostOSApple          0
+    #define kCXHostOSWindows        0
+    #define kCXHostOSLinux          1
 #else /* Other; Assume ELF (Linux) */
-    #define kCXTargetOSCorona       0
+    #define kCXTargetOSCorona       1
     #define kCXTargetOSApple        0
     #define kCXTargetOSWindows      0
-    #define kCXTargetOSLinux        1
-#endif /* Target OS */
+    #define kCXTargetOSLinux        0
+
+    #define kCXHostOSCorona         0
+    #define kCXHostOSApple          0
+    #define kCXHostOSWindows        0
+    #define kCXHostOSLinux          1
+#endif /* Target + Host OS */
 
 #ifdef __posix
     #define kCXFullPOSIX            1

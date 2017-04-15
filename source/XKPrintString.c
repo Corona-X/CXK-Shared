@@ -1,10 +1,6 @@
 #include <System/OSByteMacros.h>
 #include <Kernel/XKShared.h>
 
-static const OSUnicodePoint kXKSurrogateHighBegin  = 0xD800;
-static const OSUnicodePoint kXKSurrogateHighFinish = 0xDBFF;
-static const OSUnicodePoint kXKSurrogateLowBegin   = 0xDC00;
-static const OSUnicodePoint kXKSurrogateLowFinish  = 0xDFFF;
 static const OSUnicodePoint kXKErrorCodePoint = 0xFFFFFFFF;
 static const UInt16 kXKSerialPort0 = 0x03F8;
 
@@ -38,7 +34,7 @@ OSCount XKUTF8FromUTF16(OSUTF16Char *input, OSUTF8Char *output, OSCount count, O
 
     OSUTF16Char first = (*input++);
     (*used) = 0;
-    
+
     if (OSIsBetween(kXKSurrogateHighBegin, first, kXKSurrogateHighFinish)) {
         (*used) = 1;
 
@@ -99,7 +95,7 @@ static OSLength XKSimpleStringLengthUTF16(OSUTF16Char *string)
         string++;
         length++;
     }
-    
+
     return length;
 }
 
@@ -170,7 +166,7 @@ OSInline void XKPrintNumber(UInt64 number, UInt8 base, UInt8 hexBegin, UInt8 pad
         XKPrintSingle(buffer[i]);
 }
 
-void XKPrintString(const char *f, ...)
+void XKPrintSerial(const char *f, ...)
 {
     OSUTF8Char *format = (OSUTF8Char *)f;
 
@@ -330,8 +326,8 @@ void XKPrintString(const char *f, ...)
                     utf8[used8] = 0;
 
                     XKPrintSingle(utf8);
-                    utf16string += used;
-                    charsLeft -= used;
+                    utf16string += used + 1;
+                    charsLeft -= (used + 1);
                 }
             } break;
                 // Extension to print a hex string
