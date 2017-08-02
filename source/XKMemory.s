@@ -1,15 +1,13 @@
-#include <Kernel/XKAssembly.h>
+#include <Kernel/XKAssemblyCode.h>
 
 .section kXKCodeSectionName
 .align   kXKNaturalAlignment
 
 XKDeclareFunction(memset):
-    movq %rsi, %r8
+    xchgq %rsi, %r8
     movb %cl, %sil
-    movq %r8, %rsi
 
 XKDeclareFunction(XKMemorySetValue):
-XKDeclareFunction(XKBufferSetValue):
     movb %dl, %al
     movq %rsi, %rcx
     cld
@@ -41,7 +39,6 @@ XKDeclareFunction(XKBufferSetValue):
         ret
 
 XKDeclareFunction(XKMemoryCopy):
-XKDeclareFunction(XKBufferCopy):
     xchgq %rsi, %rdi
     cld
 

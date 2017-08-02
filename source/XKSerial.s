@@ -1,5 +1,5 @@
-#include <Kernel/XKAssembly.h>
-#include <Kernel/XKSerial.h>
+#include <Kernel/XKAssemblyCode.h>
+#include <Kernel/XKLegacy.h>
 
 #if kCXArchIA && kCXBuildDev
 

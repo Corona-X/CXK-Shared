@@ -1,5 +1,3 @@
-#include <Kernel/XKGraphics.h>
-
 UInt8 gXKBitmapFont8x16Data[256 * 16] = {
     /*   */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // 0x00
     /*   */  0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, // 0x01
@@ -392,37 +390,3 @@ unsigned char __apple_xnu_font[256*16] = {
     /* 254 */ 0x00,0x00,0x0f,0x06,0x06,0x3e,0x66,0x66,0x66,0x66,0x66,0x3e,0x06,0x06,0x0f,0x00,
     /* 255 */ 0x00,0x00,0x36,0x36,0x00,0x63,0x63,0x36,0x36,0x1c,0x1c,0x0c,0x0c,0x06,0x03,0x00
 };
-
-XKBitmapFont *gXKBitmapFont8x16;
-
-XKBitmapFont gXKBitmapFont8x16Raw = {
-    .height = 16,
-    .width  = 8,
-};
-
-void XKGraphicsContextWriteCharacter(XKGraphicsContext *context, UInt8 character, XKGraphicsPoint location, XKBitmapFont *font, UInt32 color, UInt32 bgColor)
-{
-    UInt32 *rowPointer = context->framebuffer + ((location.y * context->width) + location.x);
-    UInt8 *characterData = font->packedData + (character * font->height);
-
-    for (OSCount y = 0; y < font->height; y++)
-    {
-        UInt8 data = characterData[y];
-
-        for (SInt8 x = (font->width - 1); x >= 0; x--)
-        {
-            UInt8 state = (data >> x) & 1;
-            UInt32 fillValue = (state ? color : bgColor);
-
-            rowPointer[x] = fillValue;
-        }
-
-        rowPointer += context->width;
-    }
-}
-
-void __XKBitmapFontInitialize(void)
-{
-    gXKBitmapFont8x16 = &gXKBitmapFont8x16Raw;
-    gXKBitmapFont8x16->packedData = __apple_xnu_font;
-}

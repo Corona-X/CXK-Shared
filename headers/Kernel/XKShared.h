@@ -10,15 +10,11 @@
 #include <Corona-X.h>
 
 #include <Kernel/XKSharedTarget.h>
-#include <Kernel/XKAssembly.h>
-#include <Kernel/XKMemory.h>
-#include <Kernel/XKSerial.h>
-#include <Kernel/XKPortIO.h>
-#include <Kernel/XKPOST.h>
+#include <Kernel/XKAssemblyCode.h>
 #include <Kernel/XKProcessorState.h>
-#include <Kernel/XKUnicode.h>
-#include <Kernel/XKConsole.h>
-#include <Kernel/XKStringFormatting.h>
+#include <Kernel/XKUtilities.h>
+#include <Kernel/XKDebugLog.h>
+#include <Kernel/XKLegacy.h>
 #include <Kernel/XKLog.h>
 
 #endif /* !defined(__KERNEL_XKSHARED__) */

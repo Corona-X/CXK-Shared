@@ -1,11 +1,11 @@
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* XKMemoryUtils.h - Common Memory and String Operations           */
+/* XKUtilities.h - Basic Kernel Utilities                          */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* beeselmane - 18.9.2016  - 2:30 PM EST                           */
+/* beeselmane - 4.14.2017  -  9:15 PM PST                          */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 
-#ifndef __KERNEL_XKMEMORYUTILS__
-#define __KERNEL_XKMEMORYUTILS__ 1
+#ifndef __KERNEL_XKUTILITIES__
+#define __KERNEL_XKUTILITIES__ 1
 
 #include <Corona-X.h>
 #include <System/OSCompilerMacros.h>
@@ -20,9 +20,18 @@ OSShared SInt16 XKMemoryCompare(OSAddress first, OSAddress second, OSSize size);
 
 OSShared SInt16 XKStringCompare8(UInt8 *first, UInt8 *second);
 
+OSShared UInt64 XKGetProcessorSpeed(void);
+
+typedef struct {
+    UInt32 date;
+    UInt64 nanosecond;
+} XKTime;
+
+OSShared XKTime XKTimeGetCurrent(void);
+
 #endif /* kCXAssemblyCode */
 
-#endif /* !defined(__KERNEL_XKMEMORYUTILS__) */
+#endif /* !defined(__KERNEL_XKUTILITIES__) */
 
 /*
  
@@ -44,7 +53,7 @@ OSShared SInt16 XKStringCompare8(UInt8 *first, UInt8 *second);
  void    *memmove(void *, const void *, size_t);
  // Set Memory
  void    *memset(void *, int, size_t);
-
+ 
  
  char    *stpcpy(char *restrict, const char *restrict);
  char    *stpncpy(char *restrict, const char *restrict, size_t);

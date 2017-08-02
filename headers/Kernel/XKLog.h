@@ -10,16 +10,29 @@
 #include <Corona-X.h>
 #include <System/OSCompilerMacros.h>
 #include <System/OSTypes.h>
+#include <Kernel/XKUtilities.h>
+
+#define kXKLogSubsystemCore      "[00] "
+#define kXKLogSubsystemMemory    "[01] "
+#define kXKLogSubsystemScheduler "[02] "
+#define kXKLogSubsystemLoader    "[30] "
 
 typedef OSEnum(SInt8, XKLogLevel) {
-    kXKLogLevelNone    = -1,
-    kXKLogLevelDebug   = 0,
+    kXKLogLevelTooMuch = 0,
     kXKLogLevelVerbose = 1,
     kXKLogLevelInfo    = 2,
-    kXKLogLevelWarning = 3,
-    kXKLogLevelError   = 4,
-    kXKLogLevelFatal   = 5
+    kXKLogLevelDebug   = 3,
+    kXKLogLevelWarning = 4,
+    kXKLogLevelError   = 5,
+    kXKLogLevelFatal   = 6
 };
+
+typedef struct {
+    UInt8 level:3;
+    UInt8 subsystem:5;
+    XKTime timestamp;
+    UInt16 size;
+} XKLogEntry;
 
 /**
  * This function logs a formatted string to all registered output
