@@ -2,6 +2,8 @@
 #include <Kernel/XKDebugLog.h>
 #include <Kernel/XKSharedTarget.h>
 
+#if 0
+
 extern void XKVideoConsoleSetColor(XKConsole *console, UInt32 color);
 
 const OSUTF8Char *XKLogLevelToString(XKLogLevel level)
@@ -91,3 +93,5 @@ XKTime XKTimeGetCurrent(void)
     time.nanosecond = 0;
     return time;
 }
+
+#endif

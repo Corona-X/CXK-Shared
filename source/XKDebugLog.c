@@ -2,6 +2,8 @@
 #include <System/OSByteMacros.h>
 #include <Kernel/XKDebugLog.h>
 
+#if 0
+
 static const UInt64 kXKMask01_32 = 0x0000000100000001;
 static const UInt64 kXKMask80_32 = 0x8000000080000000;
 
@@ -1457,3 +1459,5 @@ void XKLog(XKLogLevel level, const OSUTF8Char *format, ...)
 {
     //
 }
+
+#endif

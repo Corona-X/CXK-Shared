@@ -204,9 +204,7 @@
 #endif /* Assembly Code */
 
 // Note: When the bootloader is compiling,
-// this flag will be set to 1 so that the
-// headers know to apply fixes to the EDK2
-// build toolchain
+// this flag will be set to 1
 #ifndef kCXBootloaderCode
     #define kCXBootloaderCode       0
 #endif /* Bootloader Code */
