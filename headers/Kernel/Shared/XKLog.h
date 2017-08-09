@@ -10,7 +10,7 @@
 #include <Corona-X.h>
 #include <System/OSCompilerMacros.h>
 #include <System/OSTypes.h>
-#include <Kernel/XKUtilities.h>
+#include <Kernel/Shared/XKUtilities.h>
 
 #define kXKLogSubsystemCore      "[00] "
 #define kXKLogSubsystemMemory    "[01] "

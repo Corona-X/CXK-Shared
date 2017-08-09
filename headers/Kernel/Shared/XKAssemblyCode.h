@@ -9,7 +9,7 @@
 
 #include <Corona-X.h>
 
-#define kXKNaturalAlignment            8
+#define kXKNaturalAlignment                 8
 
 #if kCXAssemblyCode
 

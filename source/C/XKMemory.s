@@ -1,11 +1,14 @@
-#include <Kernel/XKAssemblyCode.h>
+#include <Kernel/Shared/XKAssemblyCode.h>
 
 .section kXKCodeSectionName
 .align   kXKNaturalAlignment
 
+.align kXKNaturalAlignment
+
 XKDeclareFunction(memset):
-    xchgq %rsi, %r8
-    movb %cl, %sil
+    xchgq %rsi, %rdx
+
+.align kXKNaturalAlignment
 
 XKDeclareFunction(XKMemorySetValue):
     movb %dl, %al
@@ -38,6 +41,14 @@ XKDeclareFunction(XKMemorySetValue):
         rep stosb
         ret
 
+.align kXKNaturalAlignment
+
+XKDeclareFunction(memmove):
+XKDeclareFunction(memcpy):
+    xchgq %rsi, %rdi
+
+.align kXKNaturalAlignment
+
 XKDeclareFunction(XKMemoryCopy):
     xchgq %rsi, %rdi
     cld
@@ -52,6 +63,9 @@ XKDeclareFunction(XKMemoryCopy):
 
     ret
 
+.align kXKNaturalAlignment
+
+XKDeclareFunction(memcmp):
 XKDeclareFunction(XKMemoryCompare):
     movq %rdx, %rcx
     cld
@@ -81,6 +95,8 @@ XKDeclareFunction(XKMemoryCompare):
         movb -1(%rsi), %dl
         subw %dx, %ax
         ret
+
+.align kXKNaturalAlignment
 
 XKDeclareFunction(XKStringCompare8):
     1:
@@ -138,4 +154,5 @@ XKDeclareFunction(XKStringCompare8):
         movzbq %al, %rax
         movzbq %dl, %rdx
         subq %rdx, %rax
+        ret
         ret

@@ -13,19 +13,19 @@
 #if kCXArchIA
 #if !kCXAssemblyCode
 
-typedef struct {
+typedef OSPackedStructure() {
     UInt16 limit;
     OSAddress base;
     UInt16 pad[3];
 } XKProcessorGDTR;
 
-typedef struct {
+typedef OSPackedStructure() {
     UInt16 limit;
     OSAddress base;
     UInt16 pad[3];
 } XKProcessorIDTR;
 
-typedef struct {
+typedef OSPackedStructure() {
     UInt64 rax, rbx;
     UInt64 rcx, rdx;
     UInt64 r8,  r9,  r10, r11;
@@ -40,7 +40,7 @@ typedef struct {
     UInt32 padding;
 } XKProcessorBasicState;
 
-typedef struct {
+typedef OSPackedStructure() {
     UInt64 cr0, cr2;
     UInt64 cr3, cr4, cr8;
     XKProcessorGDTR gdtr;
@@ -65,12 +65,12 @@ OSShared void XKProcessorGetBasicState(XKProcessorBasicState *state);
 OSShared void XKProcessorGetSystemState(XKProcessorSystemState *state);
 OSShared void XKProcessorGetDebugState(XKProcessorDebugState *state);
 
-/*OSInline void XKProcessorGetGDTR(XKProcessorGDTR gdt)
+OSInline void XKProcessorGetGDTR(XKProcessorGDTR gdt)
 {
     __asm__("sgdt %0" : "=m" (gdt));
 }
 
-OSInline void XKProcessorGetLDT(XKProcessorSegmentSelector ldt)
+/*OSInline void XKProcessorGetLDT(XKProcessorSegmentSelector ldt)
 {
     __asm__("sldt %0" : "=m" (ldt));
 }
@@ -78,12 +78,14 @@ OSInline void XKProcessorGetLDT(XKProcessorSegmentSelector ldt)
 OSInline void XKProcessorGetTR(XKProcessorSegmentSelector tr)
 {
     __asm__("str %0" : "=m" (tr));
-}
+}*/
 
 OSInline void XKProcessorGetIDTR(XKProcessorIDTR idt)
 {
     __asm__("sidt %0" : "=m" (idt));
-}*/
+}
+
+OSShared UInt64 XKProcessorGetSpeed(void);
 
 #define XKProcessorLoadRIP(pointer)                             \
     do {                                                        \

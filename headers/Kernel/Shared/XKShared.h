@@ -9,12 +9,11 @@
 
 #include <Corona-X.h>
 
-#include <Kernel/XKSharedTarget.h>
-#include <Kernel/XKAssemblyCode.h>
-#include <Kernel/XKProcessorState.h>
-#include <Kernel/XKUtilities.h>
-#include <Kernel/XKDebugLog.h>
-#include <Kernel/XKLegacy.h>
-#include <Kernel/XKLog.h>
+#include <Kernel/Shared/XKSharedTarget.h>
+#include <Kernel/Shared/XKAssemblyCode.h>
+#include <Kernel/Shared/XKProcessorState.h>
+#include <Kernel/Shared/XKUtilities.h>
+#include <Kernel/Shared/XKLegacy.h>
+#include <Kernel/Shared/XKLog.h>
 
 #endif /* !defined(__KERNEL_XKSHARED__) */

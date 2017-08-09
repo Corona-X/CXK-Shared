@@ -81,7 +81,7 @@ typedef OSSize                  OSCount;
 typedef UInt32                  OSUnicodePoint;
 typedef UInt32                  OSUTF32Char;
 typedef UInt16                  OSUTF16Char;
-typedef UInt8                   OSUTF8Char;
+typedef char                    OSUTF8Char;
 
 typedef struct {
     OSSize    size;
