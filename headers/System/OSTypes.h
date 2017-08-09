@@ -20,10 +20,6 @@
 #define __OSDeclareEnumWithoutName(type)        enum
 #define __OSDeclareEnum(a, b, function, ...)    function
 
-#define OSBufferMake(a, s)      ((OSBuffer){((OSSize)(s)), ((OSAddress)(a))})
-#define OSBufferIsEmpty(b)      (!b.size)
-#define kOSBufferEmpty          ((OSBuffer){kOSNullPointer, 0})
-
 #define OSVAStart               __builtin_va_start
 #define OSVAGetNext             __builtin_va_arg
 #define OSVACopy                __builtin_va_copy
@@ -82,11 +78,6 @@ typedef UInt32                  OSUnicodePoint;
 typedef UInt32                  OSUTF32Char;
 typedef UInt16                  OSUTF16Char;
 typedef char                    OSUTF8Char;
-
-typedef struct {
-    OSSize    size;
-    OSAddress address;
-} OSBuffer;
 
 #endif /* !kCXAssemblyCode */
 

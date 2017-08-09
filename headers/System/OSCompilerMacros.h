@@ -33,6 +33,7 @@
     #define OSExpect(x)             ((x) == 1)
 #else /* Clang or GCC */
     #define OSExpect(x)             __builtin_expect(!!(x), 1)
+    #define OSUnlikely(x)           __builtin_expect(  (x), 0)
 
     #define OSExport                extern
     #define OSFormattedPrint        __attribute__((format(printf, 1, 2)))
