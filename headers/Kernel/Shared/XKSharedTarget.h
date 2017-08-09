@@ -20,7 +20,7 @@
     #define XKDelay(t)      SLDelayProcessor(t, !SLBootServicesHaveTerminated())
 #else /* Kernel */
     OSShared OSAddress XKAllocate(OSSize size);
-    OSShared void OSFree(OSAddress address);
+    OSShared void XKFree(OSAddress address);
 #endif /* Targets */
 
 #endif /* !defined(__KERNEL_SHAREDTARGET__) */

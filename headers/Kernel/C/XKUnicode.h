@@ -40,7 +40,7 @@
  *   to hold all the required bytes. If the buffer is not large enough, no bytes
  *   will be written to it on return.
  */
-OSShared OSCount XKUTF8FromCodePoint(OSUnicodePoint point, const OSBuffer *output);
+OSShared OSCount XKUTF8FromCodePoint(OSUnicodePoint point, OSUTF8Char *output, OSSize outputSize);
 
 /**
  * This function converts a string of UTF-8 characters into a single code point.
@@ -64,7 +64,7 @@ OSShared OSCount XKUTF8FromCodePoint(OSUnicodePoint point, const OSBuffer *outpu
  *   function will error if there are not enough bytes in the input buffer, the used
  *   pointer is null, or if the input buffer contains malformed UTF-8.
  */
-OSShared OSUnicodePoint XKUTF8ToCodePoint(const OSBuffer *input, OSCount *used);
+OSShared OSUnicodePoint XKUTF8ToCodePoint(const OSUTF8Char *input, OSSize inputSize, OSCount *used);
 
 /**
  * This function converts a unicode codepoint into a string of UTF-16 words.
@@ -86,7 +86,7 @@ OSShared OSUnicodePoint XKUTF8ToCodePoint(const OSBuffer *input, OSCount *used);
  *   small to hold all the required bytes. If the buffer is not large enough,
  *   no bytes will be written to it on return.
  */
-OSShared OSCount XKUTF16FromCodePoint(OSUnicodePoint point, const OSBuffer *output);
+OSShared OSCount XKUTF16FromCodePoint(OSUnicodePoint point, OSUTF16Char *output, OSSize outputSize);
 
 /**
  * This function converts a string of UTF-16 characters into a single code point.
@@ -110,7 +110,7 @@ OSShared OSCount XKUTF16FromCodePoint(OSUnicodePoint point, const OSBuffer *outp
  *   This function will error if there are not enough characters in the input buffer,
  *   the used pointer is null, or if the input buffer contains malformed UTF-8.
  */
-OSShared OSUnicodePoint XKUTF16ToCodePoint(const OSBuffer *input, OSCount *used);
+OSShared OSUnicodePoint XKUTF16ToCodePoint(const OSUTF16Char *input, OSSize inputSize, OSCount *used);
 
 /**
  * This function gets the number of characters required to encode a UTF-16 encoded

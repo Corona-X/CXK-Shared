@@ -53,7 +53,7 @@ static const OSUTF8Char kXKUTF8BitMasks[7] = {
 
 #pragma mark - Single character conversion
 
-OSCount XKUTF8FromCodePoint(OSUnicodePoint point, const OSBuffer *buffer)
+OSCount XKUTF8FromCodePoint(OSUnicodePoint point, OSUTF8Char *output, OSSize outputSize)
 {
     #define next(o, b, p)               \
         b[o] = (p | 0x80) & 0xBF;       \
@@ -72,29 +72,26 @@ OSCount XKUTF8FromCodePoint(OSUnicodePoint point, const OSBuffer *buffer)
             return b;                   \
         } while (0)
 
-    OSUTF8Char *output = (OSUTF8Char *)buffer->address;
-    OSCount count = buffer->size;
-
     if (OSExpect(point < 0x80)) {
         (*output) = (OSUTF8Char)point;
         return 1;
     } else if (point < 0x800) {
-        entry(2, count, point, output, {
+        entry(2, outputSize, point, output, {
             next(1, output, point);
         });
     } else if (point < 0x10000) {
-        entry(3, count, point, output, {
+        entry(3, outputSize, point, output, {
             next(2, output, point);
             next(1, output, point);
         });
     } else if (point < 0x200000) {
-        entry(4, count, point, output, {
+        entry(4, outputSize, point, output, {
             next(3, output, point);
             next(2, output, point);
             next(1, output, point);
         });
     } else {
-        entry(5, count, point, output, {
+        entry(5, outputSize, point, output, {
             next(4, output, point);
             next(3, output, point);
             next(2, output, point);
@@ -107,18 +104,18 @@ OSCount XKUTF8FromCodePoint(OSUnicodePoint point, const OSBuffer *buffer)
     #undef next
 }
 
-OSUnicodePoint XKUTF8ToCodePoint(const OSBuffer *buffer, OSCount *used)
+OSUnicodePoint XKUTF8ToCodePoint(const OSUTF8Char *input, OSSize inputSize, OSCount *used)
 {
-    const OSUTF8Char *input = (OSUTF8Char *)buffer->address;
     if (!used) return kXKUTF32Error;
 
     // TODO: Make sure this works (make sure char is unsigned)
     OSCount count = kXKUTF8ExtraByteCount[*input];
     OSUnicodePoint point = 0;
 
-    if (buffer->size < count)
+    if (inputSize < count)
     {
-        (*used) = buffer->size;
+        (*used) = inputSize;
+
         return kXKUTF32Error;
     }
 
@@ -149,15 +146,13 @@ OSUnicodePoint XKUTF8ToCodePoint(const OSBuffer *buffer, OSCount *used)
     return point;
 }
 
-OSCount XKUTF16FromCodePoint(OSUnicodePoint point, const OSBuffer *buffer)
+OSCount XKUTF16FromCodePoint(OSUnicodePoint point, OSUTF16Char *output, OSSize outputSize)
 {
-    OSUTF16Char *output = (OSUTF16Char *)buffer->address;
-
     if (OSExpect(point < 0x10000)) {
         (*output) = point;
 
         return 1;
-    } else if (buffer->size >= 2) {
+    } else if (outputSize >= 2) {
         point -= 0x10000;
 
         output[0] = (point >> 10)    + kXKSurrogateHighBegin;
@@ -170,13 +165,12 @@ OSCount XKUTF16FromCodePoint(OSUnicodePoint point, const OSBuffer *buffer)
     }
 }
 
-OSUnicodePoint XKUTF16ToCodePoint(const OSBuffer *buffer, OSCount *used)
+OSUnicodePoint XKUTF16ToCodePoint(const OSUTF16Char *input, OSSize inputSize, OSCount *used)
 {
-    const OSUTF16Char *input = (OSUTF16Char *)buffer->address;
     OSUTF16Char first = (*input++);
 
     if (OSIsBetween(kXKSurrogateHighBegin, first, kXKSurrogateHighFinish)) {
-        if (buffer->size < 2) return kXKUTF32Error;
+        if (inputSize < 2) return kXKUTF32Error;
 
         OSUTF16Char second = (*input);
         (*used) = 2;
@@ -258,18 +252,18 @@ OSUTF8Char *XKUTF16ToUTF8(const OSUTF16Char *string)
     if (utf16length == kXKLengthError) return kOSNullPointer;
     if (utf8length == kXKLengthError) return kOSNullPointer;
 
-    OSUTF8Char *result = XKAllocate((utf8length + 1) * sizeof(OSUTF8Char)).address;
+    OSUTF8Char *result = XKAllocate((utf8length + 1) * sizeof(OSUTF8Char));
     OSUTF8Char *end = result + utf8length;
     OSUTF8Char *utf8 = result;
     OSCount used;
 
     while (utf8 < end)
     {
-        OSUnicodePoint codepoint = XKUTF16ToCodePoint(&OSBufferMake(string, utf16length), &used);
+        OSUnicodePoint codepoint = XKUTF16ToCodePoint(string, utf16length, &used);
         if (codepoint == kXKUTF32Error) goto failure;
         string += used;
 
-        used = XKUTF8FromCodePoint(codepoint, &OSBufferMake(utf8, utf8length));
+        used = XKUTF8FromCodePoint(codepoint, utf8, utf8length);
         if (!used) goto failure;
         utf8 += used;
     }
@@ -292,18 +286,18 @@ OSUTF16Char *XKUTF8ToUTF16(const OSUTF8Char *string)
     if (utf16length == kXKLengthError) return kOSNullPointer;
     if (utf8length == kXKLengthError) return kOSNullPointer;
 
-    OSUTF8Char *result = XKAllocate((utf16length + 1) * sizeof(OSUTF8Char)).address;
+    OSUTF8Char *result = XKAllocate((utf16length + 1) * sizeof(OSUTF8Char));
     OSUTF8Char *end = result + utf16length;
     OSUTF8Char *utf16 = result;
     OSCount used;
 
     while (utf16 < end)
     {
-        OSUnicodePoint codepoint = XKUTF8ToCodePoint(&OSBufferMake(string, utf8length), &used);
+        OSUnicodePoint codepoint = XKUTF8ToCodePoint(string, utf8length, &used);
         if (codepoint == kXKUTF32Error) goto failure;
         string += used;
 
-        used = XKUTF16FromCodePoint(codepoint, &OSBufferMake(utf16, utf16length));
+        used = XKUTF16FromCodePoint(codepoint, utf16, utf16length);
         if (!used) goto failure;
         utf16 += used;
     }

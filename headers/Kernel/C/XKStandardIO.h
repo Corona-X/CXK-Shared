@@ -10,6 +10,7 @@
 #include <Corona-X.h>
 #include <System/OSTypes.h>
 #include <System/OSCompilerMacros.h>
+#include <System/OSUID.h>
 
 /**
  * This function converts a Unique-Identifir (UID) to a string.
