@@ -58,7 +58,7 @@
 #define OSELFSymbolTypeFromInfo(i)      (i & 0xF)
 #define OSELFSymbolScopeFromInfo(i)     (i >> 4)
 
-typedef CXEnum(UInt8, OSELFABI) {
+typedef OSEnum(UInt8, OSELFABI) {
     kOSELFABISystemV            = 0x00,
     kOSELFABIHP_UX              = 0x01,
     kOSELFABINetBSD             = 0x02,
@@ -77,7 +77,7 @@ typedef CXEnum(UInt8, OSELFABI) {
     kOSELFABIStandalone         = 0xFF
 };
 
-typedef CXEnum(UInt16, OSELFFileType) {
+typedef OSEnum(UInt16, OSELFFileType) {
     kOSELFFileTypeNone          = 0x00,
     kOSELFFileTypeRelocatable   = 0x01,
     kOSELFFileTypeExecutable    = 0x02,
@@ -85,7 +85,7 @@ typedef CXEnum(UInt16, OSELFFileType) {
     kOSELFFileTypeCore          = 0x04,
 };
 
-typedef CXEnum(UInt16, OSELFCPUType) {
+typedef OSEnum(UInt16, OSELFCPUType) {
     kOSELFCPUTypeGeneric        = 0x00,
     kOSELFCPUTypeSPARC          = 0x02,
     kOSELFCPUTypeX86            = 0x03,
@@ -98,7 +98,7 @@ typedef CXEnum(UInt16, OSELFCPUType) {
     kOSELFCPUTypeARM64          = 0xB7
 };
 
-typedef CXEnum(UInt32, OSELFSegmentType) {
+typedef OSEnum(UInt32, OSELFSegmentType) {
     kOSELFSegmentTypeNull           = 0x00000000,
     kOSELFSegmentTypeLoad           = 0x00000001,
     kOSELFSegmentTypeDynamic        = 0x00000002,
@@ -112,13 +112,13 @@ typedef CXEnum(UInt32, OSELFSegmentType) {
     kOSELFSegmentTypeCPUSpecificMax = 0x7FFFFFFF
 };
 
-typedef CXEnum(UInt32, OSELFSegmentFlags) {
+typedef OSEnum(UInt32, OSELFSegmentFlags) {
     kOSELFSegmentFlagExecutable     = 0x1,
     kOSELFSegmentFlagWritable       = 0x2,
     kOSELFSegmentFlagReadable       = 0x4
 };
 
-typedef CXEnum(UInt32, OSELFSectionType) {
+typedef OSEnum(UInt32, OSELFSectionType) {
     kOSELFSectionTypeNull           = 0x0000,
     kOSELFSectionTypeProgramInfo    = 0x0001,
     kOSELFSectionTypeSymbolTable    = 0x0002,
@@ -139,77 +139,39 @@ typedef CXEnum(UInt32, OSELFSectionType) {
     kOSELFSectionTypeReservedMax    = 0xFFFF
 };
 
-#define __OSELFFileHeaderUStart()   \
-    UInt32 magic;                   \
-    UInt8 is64Bit;                  \
-    UInt8 endian;                   \
-    UInt8 iVersion;                 \
-    OSELFABI abi;                   \
-    UInt8 abiVersion;               \
-    UInt8 padding[7];               \
-    OSELFFileType fileType;         \
-    OSELFCPUType machineType;       \
-    UInt32 version
-
-#define __OSELFFileHeaderU(t)       \
-    t entryPoint;                   \
-    t segmentHeaderOffset;          \
-    t sectionHeaderOffset
-
-#define __OSELFFileHeaderUEnd()     \
-    UInt32 flags;                   \
-    UInt16 fileHeaderSize;          \
-    UInt16 segmentHeaderSize;       \
-    UInt16 segmentCount;            \
-    UInt16 sectionHeaderSize;       \
-    UInt16 sectionCount;            \
-    UInt16 sectionNameSectionOffset
-
-#define __OSELFSegmentHeader(t)     \
-    t offset;                       \
-    t virtualAddress;               \
-    t physicalAddress;              \
-    t sizeInFile;                   \
-    t sizeInMemory
-
 typedef struct {
-    __OSELFFileHeaderUStart();
-    __OSELFFileHeaderU(UInt32);
-    __OSELFFileHeaderUEnd();
-} OSELFFileHeader32;
-
-typedef struct {
-    __OSELFFileHeaderUStart();
-    __OSELFFileHeaderU(UInt64);
-    __OSELFFileHeaderUEnd();
-} OSELFFileHeader64;
-
-typedef struct {
-    OSELFSegmentType type;
-    __OSELFSegmentHeader(UInt32);
+    UInt32 magic;
+    UInt8 is64Bit;
+    UInt8 endian;
+    UInt8 iVersion;
+    OSELFABI abi;
+    UInt8 abiVersion;
+    UInt8 padding[7];
+    OSELFFileType fileType;
+    OSELFCPUType machineType;
+    UInt32 version;
+    UInt64 entryPoint;
+    UInt64 segmentHeaderOffset;
+    UInt64 sectionHeaderOffset;
     UInt32 flags;
-    UInt32 padding;
-} OSELFSegmentHeader32;
+    UInt16 fileHeaderSize;
+    UInt16 segmentHeaderSize;
+    UInt16 segmentCount;
+    UInt16 sectionHeaderSize;
+    UInt16 sectionCount;
+    UInt16 sectionNameSectionOffset;
+} OSELFFileHeader;
 
 typedef struct {
     OSELFSegmentType type;
     UInt32 flags;
-    __OSELFSegmentHeader(UInt64);
+    UInt64 offset;
+    UInt64 virtualAddress;
+    UInt64 physicalAddress;
+    UInt64 sizeInFile;
+    UInt64 sizeInMemory;
     UInt64 padding;
-} OSELFSegmentHeader64;
-
-typedef struct {
-    UInt32 name;
-    OSELFSectionType type;
-    UInt32 flags;
-    UInt32 address;
-    UInt32 offset;
-    UInt32 size;
-    UInt32 link;
-    UInt32 info;
-    UInt32 addressAlignment;
-    UInt32 tableEntrySize;
-} OSELFSectionHeader32;
+} OSELFSegmentHeader;
 
 typedef struct {
     UInt32 name;
@@ -222,7 +184,7 @@ typedef struct {
     UInt32 info;
     UInt64 addressAlignment;
     UInt64 entrySize;
-} OSELFSectionHeader64;
+} OSELFSectionHeader;
 
 typedef struct {
     UInt32 name;
@@ -231,12 +193,7 @@ typedef struct {
     UInt16 sectionTableIndex;
     UInt64 value;
     UInt64 objectSize;
-} OSELFSymbol64;
-
-#undef __OSELFFileHeaderUEnd
-#undef __OSELFFileHeaderU
-#undef __OSELFFileHeaderUStart
-#undef __OSELFSegmentHeader
+} OSELFSymbol;
 
 #endif /* !kCXAssemblyCode */
 
