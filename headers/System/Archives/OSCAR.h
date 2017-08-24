@@ -11,6 +11,7 @@
 
 #include <Corona-X.h>
 #include <System/OSTypes.h>
+#include <System/OSCompilerMacros.h>
 #include <System/Executables/OSCX.h>
 
 #if !kCXAssemblyCode
