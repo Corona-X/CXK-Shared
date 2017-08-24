@@ -11,11 +11,11 @@
 #include <System/OSTypes.h>
 
 #if kCXLittleEndian
-    #define kOSELFMagic        0x464C457F
-    #define kOSELFMagicReverse 0x7F454C46
+    #define kOSELFMagic                 0x464C457F
+    #define kOSELFMagicReverse          0x7F454C46
 #else /* kCXBigEndian */
-    #define kOSELFMagic        0x7F454C46
-    #define kOSELFMagicReverse 0x464C457F
+    #define kOSELFMagic                 0x7F454C46
+    #define kOSELFMagicReverse          0x464C457F
 #endif /* endian */
 
 #define kOSELFFileHeaderIs32Bit         1
@@ -139,16 +139,16 @@ typedef OSEnum(UInt32, OSELFSectionType) {
     kOSELFSectionTypeReservedMax    = 0xFFFF
 };
 
-typedef struct {
+typedef OSPackedStructure() {
     UInt32 magic;
-    UInt8 is64Bit;
-    UInt8 endian;
-    UInt8 iVersion;
-    OSELFABI abi;
-    UInt8 abiVersion;
-    UInt8 padding[7];
-    OSELFFileType fileType;
-    OSELFCPUType machineType;
+    UInt8  is64Bit;
+    UInt8  endian;
+    UInt8  iVersion;
+    UInt8  abi;
+    UInt8  abiVersion;
+    UInt8  padding[7];
+    UInt16 fileType;
+    UInt16 machineType;
     UInt32 version;
     UInt64 entryPoint;
     UInt64 segmentHeaderOffset;
@@ -163,7 +163,7 @@ typedef struct {
 } OSELFFileHeader;
 
 typedef struct {
-    OSELFSegmentType type;
+    UInt32 type;
     UInt32 flags;
     UInt64 offset;
     UInt64 virtualAddress;
@@ -175,7 +175,7 @@ typedef struct {
 
 typedef struct {
     UInt32 name;
-    OSELFSectionType type;
+    UInt32 type;
     UInt64 flags;
     UInt64 virtualAddress;
     UInt64 offset;
