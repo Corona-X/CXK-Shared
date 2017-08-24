@@ -18,6 +18,7 @@
 #define OSIsBetweenEx(l, v, h)      (((l) <  (v)) && ((v) <  (h)))
 #define OSIsBetween(l, v, h)        (((l) <= (v)) && ((v) <= (h)))
 #define OSAlignUpward(p, s)         (((p) + ((s) - 1)) & (~((s) - 1)))
+#define OSAlignDown(p, s)           ((p) & (~((s) - 1)))
 
 #define OSSwap16(n)                 __builtin_bswap16(n)
 #define OSSwap32(n)                 __builtin_bswap32(n)
@@ -112,7 +113,6 @@ OSInline UInt8 OSIReverseBits8(UInt8 byte)
 
 OSInline UInt64 OSIRoundToPowerOf2(UInt64 value)
 {
-    value--;
     value |= value >> 1;
     value |= value >> 2;
     value |= value >> 4;

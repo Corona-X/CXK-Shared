@@ -219,14 +219,20 @@
 
 #ifndef kCXDebug
     #define kCXDebug                0
+#elif kCXDebug
+    #define kCXBuildTypeString      "Debug"
 #endif /* Not Debug */
 
 #ifndef kCXDevelopment
     #define kCXDevelopment          0
+#elif kCXDevelopment
+    #define kCXBuildTypeString      "Development"
 #endif /* Not Development */
 
 #ifndef kCXRelease
     #define kCXRelease              0
+#elif kCXRelease
+    #define kCXBuildTypeString      "Release"
 #endif /* Not Release */
 
 #ifndef kCXBuildDev
@@ -294,6 +300,18 @@
 #else /* !defined(__clang_version) */
     #define kCXCompilerVersion      "Unknown"
 #endif /* Clang Version */
+
+#ifndef kCXSystemName
+    #define kCXSystemName           "Corona-X"
+#endif /* !defined(kCXSystemName) */
+
+#ifndef kCXSystemRevision
+    #define kCXSystemRevision       "A"
+#endif /* !defined(kCXSystemRevision) */
+
+#ifndef kCXSystemMajorVersion
+    #define kCXSystemMajorVersion   "1"
+#endif /* !defined(kCXSystemMajorVersion) */
 
 // =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= //
 // Set hard requirements for building CX //
