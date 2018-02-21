@@ -3,6 +3,32 @@
 .section kXKCodeSectionName
 .align   kXKNaturalAlignment
 
+XKDeclareFunction(XKMemoryZero):
+    xorq %rax, %rax
+    movq %rsi, %rdx
+    cld
+
+    cmpq $0x0F, %rcx
+    jle 1f
+
+    movq %rdi, %rdx
+    negq %rdx
+    andq $7, %rdx
+    movq %rsi, %r8
+    subq %rdx, %r8
+    rep stosb
+
+    movq %r8, %rcx
+    shrq $3, %rcx
+    rep stosq
+
+    movq %r8, %rcx
+    andq $7, %rcx
+
+    1:
+        rep stosb
+        ret
+
 .align kXKNaturalAlignment
 
 XKDeclareFunction(memset):

@@ -14,6 +14,7 @@
 OSShared void XKMemorySetValue(OSAddress address, OSSize size, UInt8 value);
 OSShared void XKMemoryCopy(OSAddress input, OSAddress output, OSSize size);
 OSShared SInt16 XKMemoryCompare(OSAddress first, OSAddress second, OSSize size);
+OSShared void XKMemoryZero(OSAddress address, OSSize size);
 
 // TODO: Write these functions
 OSShared SInt64 XKStringCompare32(UInt32 *first, UInt32 *second);
