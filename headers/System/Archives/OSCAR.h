@@ -166,6 +166,7 @@ typedef struct {
     UInt32 headerChecksum;
     UInt64 dataModification;
     UInt64 archiveSignature;
+    UInt64 bootEntry;
 } CAHeaderSystemImage;
 
 typedef struct CASystemVersionInternal CASystemVersionInternal;

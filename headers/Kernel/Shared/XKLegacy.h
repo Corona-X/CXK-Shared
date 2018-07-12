@@ -332,7 +332,7 @@
          *     4. Go back to step 1.
          *
          */
-        OSPrivate void XKSerialWriteString(XKSerialPort port, UInt8 *string);
+        OSPrivate void XKSerialWriteString(XKSerialPort port, const OSUTF8Char *string);
     #endif /* Assembly Code */
 #endif /* Architecture */
 
