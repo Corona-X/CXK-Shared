@@ -140,6 +140,27 @@
 #define kOSMOx86AVX512_64               20
 #define kOSMOx86AVX512                  21
 
+#define kOSMOMachineTypeAny             -1
+#define kOSMOMachineTypeVax             1
+#define kOSMOMachineTypeMC680x0         6
+#define kOSMOMachineTypeX86             7
+#define kOSMOMachineTypeX86_64          0x01000007
+#define kOSMOMachineTypeMips            8
+#define kOSMOMachineTypeMC98000         9
+#define kOSMOMachineTypeHPPA            10
+#define kOSMOMachineTypeARM             11
+#define kOSMOMachineTypeARM64           0x01000008
+#define kOSMOMachineTypeMC88000         13
+#define kOSMOMachineTypeSPARC           14
+#define kOSMOMachineTypeI860            15
+#define kOSMOMachineTypeAlpha           16
+#define kOSMOMachineTypePowerPC         18
+#define kOSMOMachineTypePowerPC64       0x01000012
+
+#define kOSMOMachineSubtypeX86_64Any    3
+
+#define kOSMOMachineSubtypeARM64Any     3
+
 typedef OSEnum(UInt32, OSMOFileType) {
     kOSMOFileTypeObject          = 0x1,
     kOSMOFileTypeExecutable      = 0x2,
@@ -156,11 +177,11 @@ typedef OSEnum(UInt32, OSMOFileType) {
 
 typedef struct {
     UInt32 magic;
-    UInt32 machineType;
-    UInt32 machineSubtype;
+    SInt32 machineType;
+    SInt32 machineSubtype;
     UInt32 fileType;
     UInt32 loadCommandCount;
-    UInt32 loadCommandSize;
+    UInt32 loadCommandsSize;
     UInt32 flags;
     UInt32 reserved;
 } OSMOHeader;
@@ -204,8 +225,8 @@ typedef struct {
     UInt32 size;
     UInt32 symbolTableOffset;
     UInt32 symbolCount;
-    UInt32 stringTableOffset;
-    UInt32 stringCount;
+    UInt32 stringsOffset;
+    UInt32 stringsSize;
 } OSMOSymbolTableCommand;
 
 typedef struct {
