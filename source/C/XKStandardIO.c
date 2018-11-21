@@ -57,12 +57,3 @@ UInt64 XKNumberFromString(const OSUTF8Char *string, bool *isSigned, UInt64 defau
 
     return value;
 }
-
-#if kCXBootloaderCode
-    //void XKPrintString(const OSUTF8Char *format, ...) asm ("_SLPrintString");
-#endif /* kCXBootloaderCode */
-
-void XKPrintString(OSUnused const OSUTF8Char *format, ...)
-{
-    //
-}

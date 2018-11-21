@@ -13,22 +13,7 @@
 
 #if !kCXAssemblyCode
 
-typedef struct {
-    UInt32 date;
-    UInt64 nanosecond;
-} XKTime;
-
-OSShared XKTime XKTimeGetCurrent(void);
-
 #endif /* kCXAssemblyCode */
 
 #endif /* !defined(__KERNEL_SHARED_XKUTILITIES__) */
 
-/*
-
- // Copy until character
- void    *memccpy(void *restrict, const void *restrict, int, size_t);
- // Locate byte in string
- void    *memchr(const void *, int, size_t);
- 
- */
