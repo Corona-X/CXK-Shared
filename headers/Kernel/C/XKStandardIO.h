@@ -72,4 +72,6 @@ OSShared void XKPrintString(const OSUTF8Char *format, ...);
 
 OSShared void XKPrintStringFromList(const OSUTF8Char *format, OSVAList args);
 
+OSShared UInt64 XKNumberFromString(const OSUTF8Char *string, bool *isSigned, UInt64 defaultValue);
+
 #endif /* !defined(__KERNEL_C_XKSTANDARDIO__) */

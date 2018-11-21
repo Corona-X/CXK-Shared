@@ -1,12 +1,8 @@
-#include <Kernel/XKSharedTarget.h>
+#include <Kernel/Shared/XKSharedTarget.h>
 #include <System/OSByteMacros.h>
-#include <Kernel/XKDebugLog.h>
+#include <Kernel/Shared/XKDebugLog.h>
 
 #if 0
-
-#pragma mark - Unicode Functions
-
-
 
 #pragma mark - Type to String Converters
 
@@ -903,10 +899,10 @@ void __XKVideoConsoleInitAll(void)
     
     if (!config->dev.videoConsole.enabled)
         return;
-    
+
     SLGraphicsOutput **screens = SLGraphicsOutputGetAll(kOSNullPointer);
     UInt8 count = 0;
-    
+
     if (!screens)
     {
         XKLog(kXKLogLevelWarning, "No output screens found!\n");
@@ -917,7 +913,7 @@ void __XKVideoConsoleInitAll(void)
     {
         SLGraphicsOutput *screen = (*screens++);
         count++;
-        
+
         if (count > config->dev.videoConsole.maxScreenCount)
             break;
         
@@ -1005,8 +1001,7 @@ void __XKSerialConsoleInitAll(void)
     
     if (!config->dev.serialConsole.enabled)
         return;
-    
-    
+
     for (OSIndex i = 0; i < config->dev.serialConsole.portCount; i++)
     {
         XKSerialPort port = XKSerialPortInit(config->dev.serialConsole.ports[i]);

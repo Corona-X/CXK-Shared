@@ -209,6 +209,11 @@
     #define kCXBootloaderCode       0
 #endif /* Bootloader Code */
 
+// Note: Same as above, but for the kernel
+#ifndef kCXKernelCode
+    #define kCXKernelCode           0
+#endif /* Kernel Code */
+
 #if !(defined(kCXDebug) || defined(kCXDevelopment) || defined(kCXRelease))
     #define kCXDebug                0
     #define kCXDevelopment          1

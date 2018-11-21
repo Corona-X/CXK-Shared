@@ -10,7 +10,7 @@
 #include <Corona-X.h>
 
 #include <Kernel/Shared/XKSharedTarget.h>
-#include <Kernel/Shared/XKAssemblyCode.h>
+#include <Kernel/XKAssemblyCode.h>
 #include <Kernel/Shared/XKProcessorState.h>
 #include <Kernel/Shared/XKUtilities.h>
 #include <Kernel/Shared/XKLegacy.h>

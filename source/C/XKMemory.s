@@ -1,11 +1,12 @@
-#include <Kernel/Shared/XKAssemblyCode.h>
+#include <Kernel/XKAssemblyCode.h>
 
 .section kXKCodeSectionName
 .align   kXKNaturalAlignment
 
 XKDeclareFunction(XKMemoryZero):
+    xorq %rdx, %rdx
     xorq %rax, %rax
-    movq %rsi, %rdx
+    movq %rsi, %rcx
     cld
 
     cmpq $0x0F, %rcx
@@ -14,8 +15,9 @@ XKDeclareFunction(XKMemoryZero):
     movq %rdi, %rdx
     negq %rdx
     andq $7, %rdx
-    movq %rsi, %r8
+    movq %rcx, %r8
     subq %rdx, %r8
+    movq %rdx, %rcx
     rep stosb
 
     movq %r8, %rcx
@@ -36,6 +38,7 @@ XKDeclareFunction(memset):
 
 .align kXKNaturalAlignment
 
+// rdi, rsi, rdx
 XKDeclareFunction(XKMemorySetValue):
     movb %dl, %al
     movq %rsi, %rcx

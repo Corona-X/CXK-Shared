@@ -1,7 +1,7 @@
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 /* XKLegacy.h - All legacy behaviour using I/O ports goes here     */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* beeselmane - 4.14.2017  -  6:15 PM PST                          */
+/* beeselmane - 14.4.2017  -  6:15 PM PST                          */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 
 #ifndef __KERNEL_XKLEGACY__
@@ -12,7 +12,8 @@
 #include <System/OSCompilerMacros.h>
 
 #if kCXArchIA
-    #define kXKSerialAssumedClockSpeed  1843200
+    #define kXKSerialDefaultSpeed       1843200
+    #define kXKSerialDefaultPort        0x03F8
     #define kXKSerialPortError          0xFFFF
     // Just a note: I chose the read error character
     // to be the form feed character, as I decided

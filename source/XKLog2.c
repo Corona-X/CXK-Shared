@@ -1,6 +1,6 @@
-#include <Kernel/XKLog.h>
-#include <Kernel/XKDebugLog.h>
-#include <Kernel/XKSharedTarget.h>
+#include <Kernel/Shared/XKLog.h>
+#include <Kernel/Shared/XKDebugLog.h>
+#include <Kernel/Shared/XKSharedTarget.h>
 
 #if 0
 
@@ -45,7 +45,7 @@ const OSUTF8Char *XKLogLevelGetEscapeSequence(XKLogLevel level)
     }
 }
 
-void XKLogO(XKLogLevel level, const OSUTF8Char *format, ...)
+void XKLog(XKLogLevel level, const OSUTF8Char *format, ...)
 {
     XKConsole *console = gXKConsoleFirst;
     gXKLogLevelCurrent = level;

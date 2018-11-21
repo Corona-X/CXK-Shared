@@ -11,7 +11,7 @@
 #include <System/OSCompilerMacros.h>
 #include <System/OSTypes.h>
 #include <System/OSUID.h>
-#include <Kernel/XKLog.h>
+#include <Kernel/Shared/XKLog.h>
 
 #define kXKConsoleTypeOutputMask    (1 << 7)
 #define kXKConsoleTypeInputMask     (1 << 6)
@@ -29,18 +29,18 @@
 typedef struct __XKConsole {
     UInt8 type;
     UInt8 id;
-    
+
     struct __XKConsole *next;
     OSAddress context;
     XKLogLevel level;
-    
+
     // For output consoles
     void (*write)(const OSUTF8Char *string, OSLength length, OSAddress context);
     void (*delete)(OSCount count, OSAddress context);
-    
+
     // For input consoles
     OSUnicodePoint (*read)(bool wait, OSAddress context);
-    
+
     // Optional methods
     void (*destroy)(OSAddress context);
     void (*synchronize)(OSAddress context);

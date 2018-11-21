@@ -1,4 +1,4 @@
-#include <Kernel/Shared/XKAssemblyCode.h>
+#include <Kernel/XKAssemblyCode.h>
 #include <Kernel/Shared/XKLegacy.h>
 
 #if kCXArchIA && kCXBuildDev
@@ -62,6 +62,7 @@
     movw \times, \wr                    // Move counter to loop counter
 
     99:
+        rep; nop                        // Do nothing (wait)
         decw \wr                        // Decrement loop counter
         jnz 99b                         // Again if we're not done
 

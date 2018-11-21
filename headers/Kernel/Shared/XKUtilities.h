@@ -1,11 +1,11 @@
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 /* XKUtilities.h - Basic Kernel Utilities                          */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* beeselmane - 4.14.2017  -  9:15 PM PST                          */
+/* beeselmane - 14.4.2017  -  9:15 PM PST                          */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 
-#ifndef __KERNEL_XKUTILITIES__
-#define __KERNEL_XKUTILITIES__ 1
+#ifndef __KERNEL_SHARED_XKUTILITIES__
+#define __KERNEL_SHARED_XKUTILITIES__ 1
 
 #include <Corona-X.h>
 #include <System/OSCompilerMacros.h>
@@ -22,7 +22,7 @@ OSShared XKTime XKTimeGetCurrent(void);
 
 #endif /* kCXAssemblyCode */
 
-#endif /* !defined(__KERNEL_XKUTILITIES__) */
+#endif /* !defined(__KERNEL_SHARED_XKUTILITIES__) */
 
 /*
 

@@ -17,9 +17,9 @@ OSShared SInt16 XKMemoryCompare(OSAddress first, OSAddress second, OSSize size);
 OSShared void XKMemoryZero(OSAddress address, OSSize size);
 
 // TODO: Write these functions
-OSShared SInt64 XKStringCompare32(UInt32 *first, UInt32 *second);
-OSShared SInt32 XKStringCompare16(UInt16 *first, UInt16 *second);
-OSShared SInt16 XKStringCompare8 (UInt8  *first, UInt8  *second);
+OSShared SInt64 XKStringCompare32(OSUTF32Char *first, UInt32 *second);
+OSShared SInt32 XKStringCompare16(OSUTF16Char *first, UInt16 *second);
+OSShared SInt16 XKStringCompare8 (OSUTF8Char  *first, UInt8  *second);
 
 //#define XKMemorySetValue(address, size, value)  __builtin_memset(address, value, size)
 //#define XKMemoryCopy(input, output, size)       __builtin_memcpy(output, input, size)
