@@ -22,7 +22,6 @@ SInt64 XKBootConfigGetNumber(XKBootConfig *config, const OSUTF8Char *key, SInt64
     return defaultValue;
 }
 
-
 bool XKBootConfigGetBool(XKBootConfig *config, const OSUTF8Char *key, bool defaultValue)
 {
     for (OSIndex i = 0; i < (OSIndex)(config->entryCount * 2); i += 2)
