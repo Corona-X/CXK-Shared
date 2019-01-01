@@ -16,41 +16,29 @@
 typedef OSPackedStructure() {
     UInt16 limit;
     OSAddress base;
-    UInt16 pad[3];
-} XKProcessorGDTR;
+} XKProcessorDescriptor;
 
 typedef OSPackedStructure() {
-    UInt16 limit;
-    OSAddress base;
-    UInt16 pad[3];
-} XKProcessorIDTR;
-
-typedef OSPackedStructure() {
-    UInt64 rax, rbx;
-    UInt64 rcx, rdx;
+    UInt64 rflags, rip;
+    UInt64 rax, rbx, rcx, rdx;
     UInt64 r8,  r9,  r10, r11;
     UInt64 r12, r13, r14, r15;
     UInt64 rsi, rdi;
-    UInt64 rbp;
-    UInt64 rsp;
-    UInt64 rip;
-    UInt64 rflags;
-    UInt16 cs, ds, ss;
-    UInt16 es, fs, gs;
-    UInt32 padding;
+    UInt64 rsp, rbp;
 } XKProcessorBasicState;
 
 typedef OSPackedStructure() {
-    UInt64 cr0, cr2;
-    UInt64 cr3, cr4, cr8;
-    XKProcessorGDTR gdtr;
-    XKProcessorIDTR idtr;
-    UInt16 ldtr;
-    UInt16 tr;
-    UInt32 padding;
-} XKProcessorSystemState;
+    UInt64 ds, es;
+    UInt64 fs, gs;
+    UInt64 cs, ss;
+} XKProcessorSegmentState;
 
-typedef struct {
+typedef OSPackedStructure() {
+    UInt64 cr0, cr2, cr3;
+    UInt64 cr4, cr8;
+} XKProcessorControlState;
+
+typedef OSPackedStructure() {
     UInt64 dr0, dr1, dr2;
     UInt64 dr3, dr6, dr7;
 } XKProcessorDebugState;
@@ -60,14 +48,20 @@ typedef UInt64 XKProcessorMSR;
 OSShared XKProcessorMSR XKProcessorMSRRead(UInt32 id);
 OSShared void XKProcessorMSRWrite(UInt32 id, XKProcessorMSR value);
 
-// Note: rdi will always be the pointer passed in
+// Note: rdi will always be the pointer passed in. This is by nature of the ABI.
 OSShared void XKProcessorGetBasicState(XKProcessorBasicState *state);
-OSShared void XKProcessorGetSystemState(XKProcessorSystemState *state);
+OSShared void XKProcessorGetSegmentState(XKProcessorSegmentState *state);
+OSShared void XKProcessorGetControlState(XKProcessorControlState *state);
 OSShared void XKProcessorGetDebugState(XKProcessorDebugState *state);
 
-OSInline void XKProcessorGetGDTR(XKProcessorGDTR gdt)
+OSInline void XKProcessorGetGDTR(XKProcessorDescriptor *gdtr)
 {
-    __asm__("sgdt %0" : "=m" (gdt));
+    __asm__("sgdt %0" : "=m" (*gdtr));
+}
+
+OSInline void XKProcessorGetIDTR(XKProcessorDescriptor *idtr)
+{
+    __asm__("sidt %0" : "=m" (*idtr));
 }
 
 /*OSInline void XKProcessorGetLDT(XKProcessorSegmentSelector ldt)
@@ -79,11 +73,6 @@ OSInline void XKProcessorGetTR(XKProcessorSegmentSelector tr)
 {
     __asm__("str %0" : "=m" (tr));
 }*/
-
-OSInline void XKProcessorGetIDTR(XKProcessorIDTR idt)
-{
-    __asm__("sidt %0" : "=m" (idt));
-}
 
 OSShared UInt64 XKProcessorGetSpeed(void);
 

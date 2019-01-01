@@ -10,78 +10,99 @@ XKDeclareFunction(XKProcessorMSRRead):
     orq %rdx, %rax
     ret
 
+.align kXKNaturalAlignment
+
 XKDeclareFunction(XKProcessorMSRWrite):
-    movq $0x0, %rax
+    movq %rdi, %rcx
+    movq %rsi, %rdx
+    movq %rsi, %rax
+    andq $0xFFFFFFFF, %rax
+    shrq $32, %rdx
+    wrmsr
     ret
 
 .align kXKNaturalAlignment
 
 XKDeclareFunction(XKProcessorGetBasicState):
     pushfq
-    movq %rax, 0x00(%rdi)
-    movq %rbx, 0x08(%rdi)
-    movq %rcx, 0x10(%rdi)
-    movq %rdx, 0x18(%rdi)
-    movq %r8,  0x20(%rdi)
-    movq %r9,  0x28(%rdi)
-    movq %r10, 0x30(%rdi)
-    movq %r11, 0x38(%rdi)
-    movq %r12, 0x40(%rdi)
-    movq %r13, 0x48(%rdi)
-    movq %r14, 0x50(%rdi)
-    movq %r15, 0x58(%rdi)
-    movq %rsi, 0x60(%rdi)
-    movq %rdi, 0x68(%rdi)
-    movq %rbp, 0x70(%rdi)
+    movq %rax, 0x10(%rdi)
+    movq %rbx, 0x18(%rdi)
+    movq %rcx, 0x20(%rdi)
+    movq %rdx, 0x28(%rdi)
+    movq %r8,  0x30(%rdi)
+    movq %r9,  0x38(%rdi)
+    movq %r10, 0x40(%rdi)
+    movq %r11, 0x48(%rdi)
+    movq %r12, 0x50(%rdi)
+    movq %r13, 0x58(%rdi)
+    movq %r14, 0x60(%rdi)
+    movq %r15, 0x68(%rdi)
+
+    movq %rsi, 0x70(%rdi)
+    movq %rdi, 0x78(%rdi)
+
     popq %rsi
+    movq %rsi, 0x00(%rdi)
+
+    // This is the return address for our function.
+    popq %rsi
+    movq %rsi, 0x08(%rdi)
 
     movq (%rsp), %rax
-    decq %rax
-    addq $8, %rsp
-    movq %rsp, 0x78(%rdi)
     movq %rax, 0x80(%rdi)
-    subq $8, %rsp
+    movq %rbp, 0x88(%rdi)
 
-    movq %rsi, 0x88(%rdi)
-    movw %cs,  0x90(%rdi)
-    movw %ds,  0x92(%rdi)
-    movw %ss,  0x94(%rdi)
-    movw %es,  0x96(%rdi)
-    movw %fs,  0x98(%rdi)
-    movw %gs,  0x9A(%rdi)
+    // Restore registers from before the call
+    // (Even though this isn't necessary)
+    movq 0x10(%rdi), %rax
+    movq 0x70(%rdi), %rsi
+
     ret
 
 .align kXKNaturalAlignment
 
-XKDeclareFunction(XKProcessorGetSystemState):
-    movq %cr0, %rax
-    movq %cr2, %rcx
-    movq %cr3, %rdx
-    movq %cr4, %r8
-    movq %cr8, %r9
-    movq %rax, 0x00(%rdi)
-    movq %rcx, 0x08(%rdi)
-    movq %rdx, 0x10(%rdi)
-    movq %rsi, 0x18(%rdi)
-    movq %r8,  0x20(%rdi)
-    movq %r9,  0x28(%rdi)
-    sgdt 0x30(%rdi)
-    sidt 0x40(%rdi)
-    sldt 0x50(%rdi)
-    str  0x52(%rdi)
+XKDeclareFunction(XKProcessorGetSegmentState):
+    movq %ds, 0x00(%rdi)
+    movq %es, 0x00(%rdi)
+    movq %fs, 0x00(%rdi)
+    movq %gs, 0x00(%rdi)
+    movq %cs, 0x00(%rdi)
+    movq %ss, 0x00(%rdi)
+
     ret
 
+.align kXKNaturalAlignment
+
+XKDeclareFunction(XKProcessorGetControlState):
+    movq %cr0, %rsi
+    movq %cr2, %rdx
+    movq %cr3, %rcx
+    movq %cr4, %r8
+    movq %cr8, %r9
+
+    movq %rsi, 0x00(%rdi)
+    movq %rdx, 0x08(%rdi)
+    movq %rcx, 0x10(%rdi)
+    movq %r8,  0x18(%rdi)
+    movq %r9,  0x20(%rdi)
+
+    ret
+
+.align kXKNaturalAlignment
+
 XKDeclareFunction(XKProcessorGetDebugState):
-    movq %dr0, %rax
-    movq %dr1, %rcx
-    movq %dr2, %rdx
-    movq %dr3, %rsi
-    movq %dr6, %r8
-    movq %dr7, %r9
-    movq %rax, 0x00(%rdi)
-    movq %rcx, 0x08(%rdi)
-    movq %rdx, 0x10(%rdi)
-    movq %rsi, 0x18(%rdi)
-    movq %r8,  0x20(%rdi)
-    movq %r9,  0x28(%rdi)
+    movq %dr0, %rsi
+    movq %dr1, %rdx
+    movq %dr2, %rcx
+    movq %dr3, %r8
+    movq %dr6, %r9
+    movq %dr7, %r11
+
+    movq %rsi, 0x00(%rdi)
+    movq %rdx, 0x08(%rdi)
+    movq %rcx, 0x10(%rdi)
+    movq %r8,  0x18(%rdi)
+    movq %r9,  0x20(%rdi)
+    movq %r11, 0x28(%rdi)
+
     ret
