@@ -1,7 +1,7 @@
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* XKBootConfig - Basic Kernel Utilities                          */
+/* XKBootConfig.h - Functions for reading kernel configs           */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* beeselmane - 4.14.2017 -  9:15 PM PST                          */
+/* beeselmane - 20.11.2018 -  5:00 PM TP                           */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 
 #ifndef __KERNEL_SHARED_XKBOOTCONFIG__
@@ -19,8 +19,9 @@ typedef struct {
 } XKBootConfig;
 
 #if kCXKernelCode || kCXBootloaderCode
-    OSShared SInt64 XKBootConfigGetNumber(XKBootConfig *config, const OSUTF8Char *key, SInt64 defaultValue);
     OSShared bool XKBootConfigGetBool(XKBootConfig *config, const OSUTF8Char *key, bool defaultValue);
+    OSShared SInt64 XKBootConfigGetNumber(XKBootConfig *config, const OSUTF8Char *key, SInt64 defaultValue);
+    OSShared const OSUTF8Char *XKBootConfigGetString(XKBootConfig *config, const OSUTF8Char *key, const OSUTF8Char *defaultValue);
 
     OSExport XKBootConfig *gXKBootConfig;
 #endif /* kCKKernelCode || kCKBootloaderCode */

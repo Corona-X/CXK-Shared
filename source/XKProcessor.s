@@ -3,6 +3,19 @@
 .section kXKCodeSectionName
 .align   kXKNaturalAlignment
 
+XKDeclareFunction(XKProcessorReadID):
+    pushq %rbx
+    movl %esi, %eax
+    cpuid
+    movl %eax, 0x00(%rdi)
+    movl %ebx, 0x04(%rdi)
+    movl %ecx, 0x08(%rdi)
+    movl %edx, 0x12(%rdi)
+    popq %rbx
+    ret
+
+.align kXKNaturalAlignment
+
 XKDeclareFunction(XKProcessorMSRRead):
     movq %rdi, %rcx
     rdmsr
@@ -16,7 +29,7 @@ XKDeclareFunction(XKProcessorMSRWrite):
     movq %rdi, %rcx
     movq %rsi, %rdx
     movq %rsi, %rax
-    andq $0xFFFFFFFF, %rax
+    movl %eax, %eax // Ensures top 32 bits of %rax are clear
     shrq $32, %rdx
     wrmsr
     ret
@@ -44,11 +57,10 @@ XKDeclareFunction(XKProcessorGetBasicState):
     popq %rsi
     movq %rsi, 0x00(%rdi)
 
-    // This is the return address for our function.
-    popq %rsi
-    movq %rsi, 0x08(%rdi)
-
     movq (%rsp), %rax
+    movq %rax, 0x08(%rdi)
+
+    movq %rsp, %rax
     movq %rax, 0x80(%rdi)
     movq %rbp, 0x88(%rdi)
 
@@ -62,12 +74,12 @@ XKDeclareFunction(XKProcessorGetBasicState):
 .align kXKNaturalAlignment
 
 XKDeclareFunction(XKProcessorGetSegmentState):
-    movq %ds, 0x00(%rdi)
-    movq %es, 0x00(%rdi)
-    movq %fs, 0x00(%rdi)
-    movq %gs, 0x00(%rdi)
-    movq %cs, 0x00(%rdi)
-    movq %ss, 0x00(%rdi)
+    movw %ds, 0x00(%rdi)
+    movw %es, 0x02(%rdi)
+    movw %fs, 0x04(%rdi)
+    movw %gs, 0x06(%rdi)
+    movw %cs, 0x08(%rdi)
+    movw %ss, 0x0A(%rdi)
 
     ret
 
