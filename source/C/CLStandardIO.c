@@ -1,7 +1,7 @@
-#include <Kernel/C/XKStandardIO.h>
+#include <Kernel/C/CLStandardIO.h>
 
 // This only works for bases 0, 8, and 16
-UInt64 XKNumberFromString(const OSUTF8Char *string, bool *isSigned, UInt64 defaultValue)
+UInt64 CLNumberFromString(const OSUTF8Char *string, bool *isSigned, UInt64 defaultValue)
 {
     UInt64 value = 0;
     UInt8 base = 10;

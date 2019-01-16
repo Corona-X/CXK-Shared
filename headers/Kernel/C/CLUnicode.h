@@ -1,24 +1,24 @@
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* XKUnicode.h - Basic Unicode String Handling for C               */
+/* CLUnicode.h - Basic Unicode String Handling for C               */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 /* beeselmane - 8.8.2017   - 5:00 PM EST                           */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 
-#ifndef __KERNEL_C_XKUNICODE__
-#define __KERNEL_C_XKUNICODE__ 1
+#ifndef __KERNEL_C_CLUNICODE__
+#define __KERNEL_C_CLUNICODE__ 1
 
 #include <Corona-X.h>
 #include <System/OSTypes.h>
 #include <System/OSCompilerMacros.h>
 
-#define kXKUTF32Error               0xFFFFFFFF
-#define kXKUTF16Error               0xFFFF
-#define kXKUTF8Error                0xFF
+#define kCLUTF32Error               0xFFFFFFFF
+#define kCLUTF16Error               0xFFFF
+#define kCLUTF8Error                0xFF
 
-#define kXKSurrogateHighBegin       0xD800
-#define kXKSurrogateHighFinish      0xDBFF
-#define kXKSurrogateLowBegin        0xDC00
-#define kXKSurrogateLowFinish       0xDFFF
+#define kCLSurrogateHighBegin       0xD800
+#define kCLSurrogateHighFinish      0xDBFF
+#define kCLSurrogateLowBegin        0xDC00
+#define kCLSurrogateLowFinish       0xDFFF
 
 /**
  * This function converts a unicode codepoint into a string of UTF-8 bytes.
@@ -40,7 +40,7 @@
  *   to hold all the required bytes. If the buffer is not large enough, no bytes
  *   will be written to it on return.
  */
-OSShared OSCount XKUTF8FromCodePoint(OSUnicodePoint point, OSUTF8Char *output, OSSize outputSize);
+OSShared OSCount CLUTF8FromCodePoint(OSUnicodePoint point, OSUTF8Char *output, OSSize outputSize);
 
 /**
  * This function converts a string of UTF-8 characters into a single code point.
@@ -64,7 +64,7 @@ OSShared OSCount XKUTF8FromCodePoint(OSUnicodePoint point, OSUTF8Char *output, O
  *   function will error if there are not enough bytes in the input buffer, the used
  *   pointer is null, or if the input buffer contains malformed UTF-8.
  */
-OSShared OSUnicodePoint XKUTF8ToCodePoint(const OSUTF8Char *input, OSSize inputSize, OSCount *used);
+OSShared OSUnicodePoint CLUTF8ToCodePoint(const OSUTF8Char *input, OSSize inputSize, OSCount *used);
 
 /**
  * This function converts a unicode codepoint into a string of UTF-16 words.
@@ -86,7 +86,7 @@ OSShared OSUnicodePoint XKUTF8ToCodePoint(const OSUTF8Char *input, OSSize inputS
  *   small to hold all the required bytes. If the buffer is not large enough,
  *   no bytes will be written to it on return.
  */
-OSShared OSCount XKUTF16FromCodePoint(OSUnicodePoint point, OSUTF16Char *output, OSSize outputSize);
+OSShared OSCount CLUTF16FromCodePoint(OSUnicodePoint point, OSUTF16Char *output, OSSize outputSize);
 
 /**
  * This function converts a string of UTF-16 characters into a single code point.
@@ -110,7 +110,7 @@ OSShared OSCount XKUTF16FromCodePoint(OSUnicodePoint point, OSUTF16Char *output,
  *   This function will error if there are not enough characters in the input buffer,
  *   the used pointer is null, or if the input buffer contains malformed UTF-8.
  */
-OSShared OSUnicodePoint XKUTF16ToCodePoint(const OSUTF16Char *input, OSSize inputSize, OSCount *used);
+OSShared OSUnicodePoint CLUTF16ToCodePoint(const OSUTF16Char *input, OSSize inputSize, OSCount *used);
 
 /**
  * This function gets the number of characters required to encode a UTF-16 encoded
@@ -123,7 +123,7 @@ OSShared OSUnicodePoint XKUTF16ToCodePoint(const OSUTF16Char *input, OSSize inpu
  *   The number of bytes required to re-encode the string on success, or every bit
  *     set in the result for error.
  */
-OSShared OSLength XKUTF16LengthInUTF8(const OSUTF16Char *string);
+OSShared OSLength CLUTF16LengthInUTF8(const OSUTF16Char *string);
 
 /**
  * This function gets the number of characters required to encode a UTF-8 encoded
@@ -136,7 +136,7 @@ OSShared OSLength XKUTF16LengthInUTF8(const OSUTF16Char *string);
  *   The number of bytes required to re-encode the string on success, or every bit
  *     set in the result for error.
  */
-OSShared OSLength XKUTF8LengthInUTF16(const OSUTF8Char *string);
+OSShared OSLength CLUTF8LengthInUTF16(const OSUTF8Char *string);
 
 /**
  * This function converts a provided UTF-16 encoded string into
@@ -153,7 +153,7 @@ OSShared OSLength XKUTF8LengthInUTF16(const OSUTF8Char *string);
  *   the UTF-8 encoding. Must be freed with XKFree (note:
  *   XKAllocate and XKFree are macros define in XKSharedTarget.h)
  */
-OSShared OSUTF8Char *XKUTF16ToUTF8(const OSUTF16Char *string);
+OSShared OSUTF8Char *CLUTF16ToUTF8(const OSUTF16Char *string);
 
 /**
  * This function converts a provided UTF-8 encoded string into
@@ -170,7 +170,7 @@ OSShared OSUTF8Char *XKUTF16ToUTF8(const OSUTF16Char *string);
  *   the UTF-16 encoding. Must be freed with XKFree (note:
  *   XKAllocate and XKFree are macros define in XKSharedTarget.h)
  */
-OSShared OSUTF16Char *XKUTF8ToUTF16(const OSUTF8Char *string);
+OSShared OSUTF16Char *CLUTF8ToUTF16(const OSUTF8Char *string);
 
 /**
  * This function gets the number of characters in the given
@@ -182,7 +182,7 @@ OSShared OSUTF16Char *XKUTF8ToUTF16(const OSUTF8Char *string);
  * @return:
  *   The number of characters in the string.
  */
-OSShared OSLength XKUTF32Length(const OSUTF32Char *string);
+OSShared OSLength CLUTF32Length(const OSUTF32Char *string);
 
 /**
  * This function gets the number of characters in the given
@@ -194,7 +194,7 @@ OSShared OSLength XKUTF32Length(const OSUTF32Char *string);
  * @return:
  *   The number of characters in the string.
  */
-OSShared OSLength XKUTF16Length(const OSUTF16Char *string);
+OSShared OSLength CLUTF16Length(const OSUTF16Char *string);
 
 /**
  * This function gets the number of characters in the given
@@ -206,6 +206,6 @@ OSShared OSLength XKUTF16Length(const OSUTF16Char *string);
  * @return:
  *   The number of characters in the string.
  */
-OSShared OSLength XKUTF8Length(const OSUTF8Char *string);
+OSShared OSLength CLUTF8Length(const OSUTF8Char *string);
 
-#endif /* !defined(__KERNEL_C_XKUNICODE__) */
+#endif /* !defined(__KERNEL_C_CLUNICODE__) */

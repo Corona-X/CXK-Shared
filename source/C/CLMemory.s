@@ -3,7 +3,7 @@
 .section kXKCodeSectionName
 .align   kXKNaturalAlignment
 
-XKDeclareFunction(XKMemoryZero):
+XKDeclareFunction(CLMemoryZero):
     xorq %rdx, %rdx
     xorq %rax, %rax
     movq %rsi, %rcx
@@ -39,7 +39,7 @@ XKDeclareFunction(memset):
 .align kXKNaturalAlignment
 
 // rdi, rsi, rdx
-XKDeclareFunction(XKMemorySetValue):
+XKDeclareFunction(CLMemorySetValue):
     movb %dl, %al
     movq %rsi, %rcx
     cld
@@ -78,7 +78,7 @@ XKDeclareFunction(memcpy):
 
 .align kXKNaturalAlignment
 
-XKDeclareFunction(XKMemoryCopy):
+XKDeclareFunction(CLMemoryCopy):
     xchgq %rsi, %rdi
     cld
 
@@ -95,7 +95,7 @@ XKDeclareFunction(XKMemoryCopy):
 .align kXKNaturalAlignment
 
 XKDeclareFunction(memcmp):
-XKDeclareFunction(XKMemoryCompare):
+XKDeclareFunction(CLMemoryCompare):
     movq %rdx, %rcx
     cld
 
@@ -127,7 +127,7 @@ XKDeclareFunction(XKMemoryCompare):
 
 .align kXKNaturalAlignment
 
-XKDeclareFunction(XKStringCompare8):
+XKDeclareFunction(CLStringCompare8):
     1:
         testb $7, %dil
         je 2f

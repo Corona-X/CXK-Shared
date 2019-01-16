@@ -1,11 +1,11 @@
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
-/* XKStandardIO.h - Kernel C routines to print and read strings.   */
+/* CLStandardIO.h - Kernel C routines to print and read strings.   */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 /* beeselmane - 8.8.2017   - 5:00 PM EST                           */
 /**=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=**/
 
-#ifndef __KERNEL_C_XKSTANDARDIO__
-#define __KERNEL_C_XKSTANDARDIO__ 1
+#ifndef __KERNEL_C_CLSTANDARDIO__
+#define __KERNEL_C_CLSTANDARDIO__ 1
 
 #include <Corona-X.h>
 #include <System/OSTypes.h>
@@ -24,7 +24,7 @@
  *   be freed with a call to the free function in whichever
  *   environment the function was called in.
  */
-OSShared OSUTF8Char *XKUIDToString(const OSUIDIntelData *uid);
+OSShared OSUTF8Char *CLUIDToString(const OSUIDIntelData *uid);
 
 /**
  * This function converts a number to string.
@@ -58,20 +58,20 @@ OSShared OSUTF8Char *XKUIDToString(const OSUIDIntelData *uid);
  *   function was called in.
  *
  */
-OSShared OSUTF8Char *XKNumberToString(SInt64 number, bool isSigned, UInt8 base, UInt8 padding, OSUTF8Char hexStart, OSLength *length);
+OSShared OSUTF8Char *CLNumberToString(SInt64 number, bool isSigned, UInt8 base, UInt8 padding, OSUTF8Char hexStart, OSLength *length);
 
-OSShared OSUTF8Char *XKWriteToString(const OSUTF8Char *format, ...);
+OSShared OSUTF8Char *CLWriteToString(const OSUTF8Char *format, ...);
 
-OSShared OSUTF8Char *XKWriteToStringFromList(const OSUTF8Char *format, OSVAList args);
+OSShared OSUTF8Char *CLWriteToStringFromList(const OSUTF8Char *format, OSVAList args);
 
-OSShared OSSize XKWriteToBuffer(const OSUTF8Char *buffer, OSSize bufferSize, const OSUTF8Char *format, ...);
+OSShared OSSize CLWriteToBuffer(const OSUTF8Char *buffer, OSSize bufferSize, const OSUTF8Char *format, ...);
 
-OSShared OSSize XKWriteToBufferFromList(const OSUTF8Char *buffer, OSSize bufferSize, const OSUTF8Char *format, OSVAList args);
+OSShared OSSize CLWriteToBufferFromList(const OSUTF8Char *buffer, OSSize bufferSize, const OSUTF8Char *format, OSVAList args);
 
-OSShared void XKPrintString(const OSUTF8Char *format, ...);
+OSShared void CLPrintString(const OSUTF8Char *format, ...);
 
-OSShared void XKPrintStringFromList(const OSUTF8Char *format, OSVAList args);
+OSShared void CLPrintStringFromList(const OSUTF8Char *format, OSVAList args);
 
-OSShared UInt64 XKNumberFromString(const OSUTF8Char *string, bool *isSigned, UInt64 defaultValue);
+OSShared UInt64 CLNumberFromString(const OSUTF8Char *string, bool *isSigned, UInt64 defaultValue);
 
-#endif /* !defined(__KERNEL_C_XKSTANDARDIO__) */
+#endif /* !defined(__KERNEL_C_CLSTANDARDIO__) */
