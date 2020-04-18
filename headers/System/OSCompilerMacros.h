@@ -58,7 +58,7 @@
     #endif
 
     #define OSPackedStructure(n)    struct n __attribute__((__packed__))
-    #define OSAligned(n)            __attricute__((aligned(n)))
+    #define OSAligned(n)            __attribute__((aligned(n)))
 #endif /* Compiler */
 
 #define OSStringValue(x)        #x

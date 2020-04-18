@@ -13,5 +13,9 @@ SLRuntimeServices *SLRuntimeServicesGetCurrent(void)
 
 OSNoReturn void SLRuntimeServicesResetSystem(SLResetType type, SLStatus status, const OSUTF8Char *reason)
 {
-    SLRuntimeServicesGetCurrent()->resetSystem(type, status, 0, reason);
+    SLStatus code = SLRuntimeServicesGetCurrent()->resetSystem(type, status, 0, reason);
+
+    // This shouldn't happen. If it does, we can look at %rax, %rbx, and %rcx to know why.
+    __asm__ volatile ("ud2" : : "a" (code), "b" (type), "c" (status) : );
+    __builtin_unreachable();
 }

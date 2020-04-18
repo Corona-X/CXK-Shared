@@ -13,11 +13,6 @@
 #if kCXArchIA
 #if !kCXAssemblyCode
 
-typedef OSPackedStructure() {
-    UInt16 limit;
-    OSAddress base;
-} XKSegmentDescriptor;
-
 #define fence(type)                             \
     do {                                        \
         __asm__ volatile(#type "fence" : : : ); \
@@ -27,22 +22,10 @@ typedef OSPackedStructure() {
 #define sfence() fence(s)
 #define mfence() fence(m)
 
-// cpuid
-// rdmsr
-// wrmsr
-// rdtsc
-// l/s/mfence
-// lgdt/sgdt
-// lidt/sidt
-// ltr/str
-// invlpg
-// swapgs
-// hlt
-// wbinvd
-
+// Note: This macro assumes e{a,b,c,d}x exist as variables in the local scope
 #define cpuid(c)                                \
     do  {                                       \
-    __asm__ volatile("cpuid" :                  \
+        __asm__ volatile("cpuid" :              \
                      "=a" (eax), "=b" (ebx) ,   \
                      "=c" (ecx), "=d" (edx) :   \
                       "a" (c)                   \
@@ -59,10 +42,27 @@ typedef OSPackedStructure() {
                         );                      \
     } while (0)
 
+#define rdtsc(tsc)                              \
+    do {                                        \
+        UInt32 hi, lo;                          \
+                                                \
+        __asm__ volatile("rdtsc" :              \
+                         "=a" (lo), "=b" (hi)   \
+                         : :                    \
+                        );                      \
+    } while (0)
+
 #define sgdt(gdtr)                              \
     do  {                                       \
         __asm__ volatile("sgdt %0" :            \
                          "=m" (*(gdtr)) : :     \
+                        );                      \
+    } while (0)
+
+#define lgdt(gdtr)                              \
+    do  {                                       \
+        __asm__ volatile("lgdt %0" : :          \
+                         "m" (*(gdtr)) :        \
                         );                      \
     } while (0)
 
@@ -73,9 +73,67 @@ typedef OSPackedStructure() {
                         );                      \
     } while (0)
 
+#define lidt(idtr)                              \
+    do {                                        \
+        __asm__ volatile("ligt %0" : :          \
+                         "m" (*(idtr)) :        \
+                        );                      \
+    } while (0)
+
+#define sldt(seg)                               \
+    do {                                        \
+        __asm__ volatile("sldt %0" :            \
+                         "=rm" (seg) : :        \
+                        );                      \
+    } while (0)
+
+#define lldt(seg)                               \
+    do {                                        \
+        __asm__ volatile ("lldt %0" : :         \
+                          "rm" (seg) :          \
+                         );                     \
+    } while (0)
+
+#define str(seg)                                \
+    do {                                        \
+        __asm__ volatile("str %0" :             \
+                         "=rm" (seg) : :        \
+                        );                      \
+    } while (0)
+
+#define ltr(seg)                                \
+    do {                                        \
+        __asm__ volatile("ltr %0" : :           \
+                         "rm" (seg) :           \
+                        );                      \
+    } while (0)
+
 #define swapgs()                                \
     do {                                        \
         __asm__ volatile("swapgs" : : : );      \
+    } while (0)
+
+#define wbinvd()                                \
+    do {                                        \
+        __asm__ volatile("wbinvd" : : : );      \
+    } while (0)
+
+#define invlpg(addr)                            \
+    do {                                        \
+        __asm__ volatile("invlpg (%0)" : :      \
+                         "r" (addr) :           \
+                         "memory"               \
+                        );                      \
+    } while (0)
+
+#define cli()                                   \
+    do {                                        \
+        __asm__ volatile("cli" : : : );         \
+    } while (0)
+
+#define sti()                                   \
+    do {                                        \
+        __asm__ volatile("sti" : : : );         \
     } while (0)
 
 #define hlt()                                   \
@@ -99,26 +157,6 @@ OSInline UInt64 rdmsr(UInt32 msr)
 
     return ((((UInt64)high) << 32) | low);
 }
-
-/*        OSInline void XKProcessorSetGDTR(XKProcessorDescriptor *gdtr)
-        {
-            __asm__("sgdt %0" : "=m" (*gdtr));
-        }
-
-        OSInline void XKProcessorSetIDTR(XKProcessorDescriptor *idtr)
-        {
-            __asm__("sidt %0" : "=m" (*idtr));
-        }*/
-
-        /*OSInline void XKProcessorGetLDT(XKProcessorSegmentSelector ldt)
-         {
-         __asm__("sldt %0" : "=m" (ldt));
-         }
-
-         OSInline void XKProcessorGetTR(XKProcessorSegmentSelector tr)
-         {
-         __asm__("str %0" : "=m" (tr));
-         }*/
 
 #endif /* kCXAssemblyCode */
 #endif /* Architecture */

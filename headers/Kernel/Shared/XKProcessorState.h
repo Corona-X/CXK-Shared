@@ -38,6 +38,11 @@ typedef OSPackedStructure() {
     UInt64 dr3, dr6, dr7;
 } XKProcessorDebugState;
 
+typedef OSPackedStructure() {
+    UInt16 limit;
+    OSAddress base;
+} XKSegmentDescriptor;
+
 // Note: rdi will always be the pointer passed in. This is by nature of the ABI.
 OSShared void XKProcessorGetBasicState(XKProcessorBasicState *state);
 OSShared void XKProcessorGetSegmentState(XKProcessorSegmentState *state);

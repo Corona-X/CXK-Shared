@@ -13,6 +13,10 @@
 
 #if !kCXAssemblyCode
 
+// A note on the format of this structure:
+// The `entries` field is a pointer to a list of (key, value) pairs.
+// Each (key, value) pair is simply comprised of two pointers.
+// This structure is a `dumb` dictionary, it simply stores strings for keys.
 typedef struct {
     OSCount entryCount;
     OSAddress *entries;

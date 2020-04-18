@@ -14,7 +14,6 @@
 // that you can get pretty hacky with the calling of these routines.
 
 .section kXKCodeSectionName
-.align kXKNaturalAlignment
 
 // Arguments:
 //   %dx: scratch register

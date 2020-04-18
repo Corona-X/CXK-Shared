@@ -32,13 +32,13 @@
 #define OSSwapToLittleEndian32(n)   OSSwapLittle32(n)
 #define OSSwapToLittleEndian64(n)   OSSwapLittle64(n)
 
-#define OSSwapFromBigEndian16(n)    OSSwapLittle16(n)
-#define OSSwapFromBigEndian32(n)    OSSwapLittle32(n)
-#define OSSwapFromBigEndian64(n)    OSSwapLittle64(n)
+#define OSSwapFromBigEndian16(n)    OSSwapBig16(n)
+#define OSSwapFromBigEndian32(n)    OSSwapBig32(n)
+#define OSSwapFromBigEndian64(n)    OSSwapBig64(n)
 
-#define OSSwapToBigEndian16(n)      OSSwapLittle16(n)
-#define OSSwapToBigEndian32(n)      OSSwapLittle32(n)
-#define OSSwapToBigEndian64(n)      OSSwapLittle64(n)
+#define OSSwapToBigEndian16(n)      OSSwapBig16(n)
+#define OSSwapToBigEndian32(n)      OSSwapBig32(n)
+#define OSSwapToBigEndian64(n)      OSSwapBig64(n)
 
 #if kCXLittleEndian
     #define OSSwapLittle16(n)       ((UInt16)(n))
